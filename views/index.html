@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+  <title>Minicraft.js</title>
+
+  <script src="js/util.js"></script>
+  <script src="js/lib/keyboard.js"></script>
+
+  <script src="js/gfx/Color.js"></script>
+  <script src="js/gfx/Font.js"></script>
+  <script src="js/gfx/Images.js"></script>
+  <script src="js/gfx/Screen.js"></script>
+  <script src="js/gfx/Sprite.js"></script>
+  <script src="js/gfx/SpriteSheet.js"></script>
+
+  <script src="js/screen/Menu.js"></script>
+  <script src="js/screen/AboutMenu.js"></script>
+  <script src="js/screen/ContainerMenu.js"></script>
+  <script src="js/screen/CraftingMenu.js"></script>
+  <script src="js/screen/DeadMenu.js"></script>
+  <script src="js/screen/InstructionsMenu.js"></script>
+  <script src="js/screen/InventoryMenu.js"></script>
+  <script src="js/screen/LevelTransitionMenu.js"></script>
+  <script src="js/screen/ListItem.js"></script>
+  <script src="js/screen/TitleMenu.js"></script>
+  <script src="js/screen/WonMenu.js"></script>
+
+  <script src="js/level/tile/Tile.js"></script>
+
+  <script src="js/item/resource/Resource.js"></script>
+  <script src="js/item/resource/FoodResource.js"></script>
+  <script src="js/item/resource/PlantableResource.js"></script>
+  <script src="js/item/resource/Resources.js"></script>
+
+  <script src="js/item/Item.js"></script>
+  <script src="js/item/ToolType.js"></script>
+  <script src="js/item/FurnitureItem.js"></script>
+  <script src="js/item/PowerGloveItem.js"></script>
+  <script src="js/item/ResourceItem.js"></script>
+  <script src="js/item/ToolItem.js"></script>
+
+  <script src="js/entity/Entity.js"></script>
+  <script src="js/entity/ItemEntity.js"></script>
+
+  <script src="js/entity/particle/Particle.js"></script>
+  <script src="js/entity/particle/SmashParticle.js"></script>
+  <script src="js/entity/particle/TextParticle.js"></script>
+
+  <script src="js/entity/Mob.js"></script>
+  <script src="js/entity/Player.js"></script>
+  <script src="js/entity/AirWizard.js"></script>
+  <script src="js/entity/Slime.js"></script>
+  <script src="js/entity/Spark.js"></script>
+  <script src="js/entity/Zombie.js"></script>
+
+  <script src="js/entity/Furniture.js"></script>
+  <script src="js/entity/Anvil.js"></script>
+  <script src="js/entity/Chest.js"></script>
+  <script src="js/entity/Furnace.js"></script>
+  <script src="js/entity/Inventory.js"></script>
+  <script src="js/entity/Lantern.js"></script>
+  <script src="js/entity/Oven.js"></script>
+  <script src="js/entity/Workbench.js"></script>
+
+  <script src="js/crafting/Recipe.js"></script>
+  <script src="js/crafting/FurnitureRecipe.js"></script>
+  <script src="js/crafting/ResourceRecipe.js"></script>
+  <script src="js/crafting/ToolRecipe.js"></script>
+  <script src="js/crafting/Crafting.js"></script>
+
+  <script src="js/level/tile/CactusTile.js"></script>
+  <script src="js/level/tile/CloudCactusTile.js"></script>
+  <script src="js/level/tile/CloudTile.js"></script>
+  <script src="js/level/tile/DirtTile.js"></script>
+  <script src="js/level/tile/FarmTile.js"></script>
+  <script src="js/level/tile/GrassTile.js"></script>
+  <script src="js/level/tile/FlowerTile.js"></script>
+  <script src="js/level/tile/HardRockTile.js"></script>
+  <script src="js/level/tile/HoleTile.js"></script>
+  <script src="js/level/tile/InfiniteFallTile.js"></script>
+  <script src="js/level/tile/LavaTile.js"></script>
+  <script src="js/level/tile/OreTile.js"></script>
+  <script src="js/level/tile/RockTile.js"></script>
+  <script src="js/level/tile/SandTile.js"></script>
+  <script src="js/level/tile/SaplingTile.js"></script>
+  <script src="js/level/tile/StairsTile.js"></script>
+  <script src="js/level/tile/StoneTile.js"></script>
+  <script src="js/level/tile/TreeTile.js"></script>
+  <script src="js/level/tile/WaterTile.js"></script>
+  <script src="js/level/tile/WheatTile.js"></script>
+  <script src="js/level/tile/Tiles.js"></script>
+
+  <script src="js/level/Level.js"></script>
+
+  <script src="js/level/levelgen/LevelGen.js"></script>
+
+  <script src="js/sound/Sound.js"></script>
+  <script src="js/InputHandler.js"></script>
+  <script src="js/Game.js"></script>
+
+</head>
+<body>
+  <div>
+    <canvas id="canvas" width="480" height="360"></canvas>
+  </div>
+
+  <script>
+    var game = new Game();
+    images.add('icons', 'res/icons.png', function(){
+      game.start();
+    });
+  </script>
+</body>
+</html>
