@@ -1,0 +1,24 @@
+
+Tile.grass         = new GrassTile(0);
+Tile.rock          = new RockTile(1);
+Tile.water         = new WaterTile(2);
+Tile.flower        = new FlowerTile(3);
+Tile.tree          = new TreeTile(4);
+Tile.dirt          = new DirtTile(5);
+Tile.sand          = new SandTile(6);
+Tile.cactus        = new CactusTile(7);
+Tile.hole          = new HoleTile(8);
+Tile.treeSapling   = new SaplingTile(9, Tile.grass, Tile.tree);
+Tile.cactusSapling = new SaplingTile(10, Tile.sand, Tile.cactus);
+Tile.farmland      = new FarmTile(11);
+Tile.wheat         = new WheatTile(12);
+Tile.lava          = new LavaTile(13);
+Tile.stairsDown    = new StairsTile(14, false);
+Tile.stairsUp      = new StairsTile(15, true);
+Tile.infiniteFall  = new InfiniteFallTile(16);
+Tile.cloud         = new CloudTile(17);
+Tile.hardRock      = new HardRockTile(18);
+Tile.ironOre       = new OreTile(19, Resource.ironOre);
+Tile.goldOre       = new OreTile(20, Resource.goldOre);
+Tile.gemOre        = new OreTile(21, Resource.gem);
+Tile.cloudCactus   = new CloudCactusTile(22);
