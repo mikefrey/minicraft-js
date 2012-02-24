@@ -124,8 +124,8 @@ Game.prototype = {
     }
 
     //try {
-      this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons));
-      this.lightScreen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons));
+      this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons), this.ctx);
+      this.lightScreen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons), this.ctx);
     //} catch (e) {
     //  console.log(e);
     //}
@@ -170,7 +170,7 @@ Game.prototype = {
         ticks = 0;
       }
 
-      setTimeout(loop, 10);
+      if (this.running) setTimeout(loop, 10);
     }).bind(this);
 
     loop();
@@ -249,12 +249,12 @@ Game.prototype = {
 
     this.renderGui();
 
-    for (y = 0; y < screen.h; y++) {
-      for (x = 0; x < screen.w; x++) {
-        var cc = screen.pixels[x + y * screen.w];
-        if (cc < 255) this.pixels[x + y * Game.WIDTH] = this.colors[cc];
-      }
-    }
+    // for (y = 0; y < screen.h; y++) {
+    //   for (x = 0; x < screen.w; x++) {
+    //     var cc = screen.pixels[x + y * screen.w];
+    //     if (cc < 255) this.pixels[x + y * Game.WIDTH] = this.colors[cc];
+    //   }
+    // }
 
     // TODO : setImageData on canvas
     // Graphics g = bs.getDrawGraphics();
@@ -268,18 +268,18 @@ Game.prototype = {
     // g.dispose();
     // bs.show();
 
-    var ww = Game.WIDTH * Game.SCALE;
-    var hh = Game.HEIGHT * Game.SCALE;
-    var imgData = this.ctx.createImageData(ww, hh);
-    var len = imgData.data.length;
+    // var ww = Game.WIDTH * Game.SCALE;
+    // var hh = Game.HEIGHT * Game.SCALE;
+    // var imgData = this.ctx.createImageData(ww, hh);
+    // var len = imgData.data.length;
 
-    for (var i = 0; i < len; i+=3) {
-      imgData.data[i+0] = this.pixels[i+0];
-      imgData.data[i+1] = this.pixels[i+1];
-      imgData.data[i+2] = this.pixels[i+2];
-    }
+    // for (var i = 0; i < len; i+=3) {
+    //   imgData.data[i+0] = this.pixels[i+0];
+    //   imgData.data[i+1] = this.pixels[i+1];
+    //   imgData.data[i+2] = this.pixels[i+2];
+    // }
 
-    this.ctx.putImageData(imgData, 0, 0); //, ww, hh);
+    // this.ctx.putImageData(imgData, 0, 0); //, ww, hh);
   },
 
   renderGui: function() {

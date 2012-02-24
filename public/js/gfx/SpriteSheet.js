@@ -6,12 +6,13 @@
 function SpriteSheet(image) {
 	this.width = image.width;
 	this.height = image.height;
-	this.pixels = [];
+  this.image = image;
+	// this.pixels = [];
 
-	var px = image.getData(0, 0, this.width, this.height);
-	for (var i = 0; i < px.length; i+=4) {
-		this.pixels.push(px[i+3] / 64);
-	}
+	// var px = image.getData(0, 0, this.width, this.height);
+	// for (var i = 0; i < px.length; i+=4) {
+	// 	this.pixels.push(px[i+3] / 64);
+	// }
 }
 
 

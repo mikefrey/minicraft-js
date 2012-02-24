@@ -11,14 +11,11 @@ function Img(path, fn) {
 
 Img.prototype = {
 
-  getData: function(x, y, h, w) {
-    return this.ctx.getImageData(x, y, h, w);
+  getData: function(x, y, w, h) {
+    return this.ctx.getImageData(x, y, w, h);
   },
 
   onload: function() {
-    this.width = this._img.width;
-    this.height = this._img.height;
-
     var canvas = document.createElement('canvas');
     canvas.height = this.height;
     canvas.width = this.width;
@@ -26,7 +23,6 @@ Img.prototype = {
 
     var ctx = canvas.getContext('2d');
     ctx.drawImage(this._img, 0, 0);
-    this.ctx = ctx;
 
     this.fn();
   },
@@ -41,14 +37,38 @@ Img.prototype = {
 
 
 
-function Images() {
-
-}
+function Images() { }
 
 Images.prototype = {
 
   add: function(name, path, fn) {
-    this[name] = new Img(path, fn);
+    //this[name] = new Img(path, fn);
+
+    function onload(ev) {
+      // this.width = this._img.width;
+      // this.height = this._img.height;
+
+      var canvas = document.createElement('canvas');
+      canvas.height = img.height;
+      canvas.width = img.width;
+      document.body.appendChild(canvas);
+
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      fn();
+    }
+
+    var img = new Image();
+    img.onload = onload;
+    img.onerror = this.onerror.bind(this);
+    img.src = path;
+
+    this[name] = img;
+  },
+
+  onerror: function() {
+    console.log("IMAGE LOAD ERROR:", arguments);
   }
 
 };

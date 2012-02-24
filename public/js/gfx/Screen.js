@@ -1,6 +1,7 @@
 // package com.mojang.ld22.gfx;
 
-function Screen(w, h, sheet) {
+function Screen(w, h, sheet, ctx) {
+	this.ctx = ctx;
 	this.sheet = sheet;
 	this.w = w;
 	this.h = h;
@@ -33,19 +34,34 @@ Screen.prototype = {
 		var yTile = tile / 32;
 		var toffs = xTile * 8 + yTile * 8 * this.sheet.width;
 
-		for (var y = 0; y < 8; y++) {
-			var ys = y;
-			if (mirrorY) ys = 7 - y;
-			if (y + yp < 0 || y + yp >= this.h) continue;
-			for (var x = 0; x < 8; x++) {
-				if (x + xp < 0 || x + xp >= this.w) continue;
+		var dx = xp * 3;
+		var dy = yp * 3;
+		var dw = 8 * 3;
+		var dh = 8 * 3;
 
-				var xs = x;
-				if (mirrorX) xs = 7 - x;
-				var col = (colors >> (this.sheet.pixels[xs + ys * this.sheet.width + toffs] * 8)) & 255;
-				if (col < 255) this.pixels[(x + xp) + (y + yp) * this.w] = col;
-			}
+		if (mirrorX) {
+			dx += dw;
+			dw *= -1;
 		}
+		if (mirrorY) {
+			dy += dh;
+			dw *= -1;
+		}
+		this.ctx.drawImage(this.sheet.image, xTile, yTile, 8, 8, dx, dy, dw, dh);
+
+		// for (var y = 0; y < 8; y++) {
+		// 	var ys = y;
+		// 	if (mirrorY) ys = 7 - y;
+		// 	if (y + yp < 0 || y + yp >= this.h) continue;
+		// 	for (var x = 0; x < 8; x++) {
+		// 		if (x + xp < 0 || x + xp >= this.w) continue;
+
+		// 		var xs = x;
+		// 		if (mirrorX) xs = 7 - x;
+		// 		var col = (colors >> (this.sheet.pixels[xs + ys * this.sheet.width + toffs] * 8)) & 255;
+		// 		if (col < 255) this.pixels[(x + xp) + (y + yp) * this.w] = col;
+		// 	}
+		// }
 	},
 
 	setOffset: function(xOffset, yOffset) {
@@ -54,6 +70,7 @@ Screen.prototype = {
 	},
 
 	overlay: function(screen2, xa, xy) {
+
 		var oPixels = screen2.pixels;
 		var i = 0;
 		for (var y = 0; y < this.h; y++) {
@@ -65,6 +82,7 @@ Screen.prototype = {
 	},
 
 	renderLight: function(x, y, r) {
+		return;
 		x -= this.xOffset;
 		y -= this.yOffset;
 		var x0 = x - r;
