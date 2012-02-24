@@ -8,7 +8,6 @@ app.configure('development', 'production', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-
 app.get('/', function(req, res){
     res.sendfile('views/index.html');
 });
