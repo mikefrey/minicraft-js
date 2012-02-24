@@ -47,7 +47,7 @@ Screen.prototype = {
 			dy += dh;
 			dw *= -1;
 		}
-		this.ctx.drawImage(this.sheet.image, xTile, yTile, 8, 8, dx, dy, dw, dh);
+		this.ctx.drawImage(this.sheet.image, xTile * 8, yTile * 8, 8, 8, dx, dy, dw, dh);
 
 		// for (var y = 0; y < 8; y++) {
 		// 	var ys = y;

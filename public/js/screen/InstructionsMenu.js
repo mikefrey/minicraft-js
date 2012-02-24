@@ -13,7 +13,7 @@ InstructionsMenu.prototype = extend({}, new Menu(), {
 
   tick: function() {
     if (this.input.attack.clicked || this.input.menu.clicked) {
-      this.game.setMenu(parent);
+      this.game.setMenu(this.parent);
     }
   },
 
