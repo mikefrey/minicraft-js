@@ -1,5 +1,6 @@
-var express = require('express');
+var port = process.env.PORT || 8080;
 
+var express = require('express');
 var app = express.createServer();
 
 app.configure('development', 'production', function(){
@@ -12,4 +13,4 @@ app.get('/', function(req, res){
     res.sendfile('views/index.html');
 });
 
-app.listen(8001);
+app.listen(port);
