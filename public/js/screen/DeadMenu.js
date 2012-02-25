@@ -9,7 +9,7 @@ function DeadMenu() {
 }
 
 DeadMenu.Super = Menu.prototype;
-DeadMenu.prototype = extend({}, new Menu(), {
+DeadMenu.prototype = extend(new Menu(), {
 
   tick: function() {
     if (this.inputDelay > 0) {
@@ -24,9 +24,9 @@ DeadMenu.prototype = extend({}, new Menu(), {
     Font.renderFrame(screen, '', 1, 3, 18, 9);
     Font.draw('You died! Aww!', screen, 2 * 8, 4 * 8, Color.get(-1, 555, 555, 555));
 
-    var seconds = this.game.gameTime / 60;
-    var minutes = seconds / 60;
-    var hours = minutes / 60;
+    var seconds = this.game.gameTime / 60 | 0;
+    var minutes = seconds / 60 | 0;
+    var hours = minutes / 60 | 0;
     minutes %= 60;
     seconds %= 60;
 

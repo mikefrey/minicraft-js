@@ -6,7 +6,7 @@ function TreeTile(id) {
 }
 
 TreeTile.Super = Tile.prototype;
-TreeTile.prototype = extend({}, new Tile(), {
+TreeTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(10, 30, 151, level.grassColor);

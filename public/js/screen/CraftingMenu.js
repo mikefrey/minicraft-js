@@ -31,7 +31,7 @@ function CraftingMenu(recipes, player) {
 }
 
 CraftingMenu.Super = Menu.prototype;
-CraftingMenu.prototype = extend({}, new Menu(), {
+CraftingMenu.prototype = extend(new Menu(), {
 
   tick: function() {
     var input = this.input;

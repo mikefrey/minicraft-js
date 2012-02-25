@@ -19,7 +19,7 @@ Array.prototype.remove = function(item) {
 Array.prototype.removeAll = function(arr) {
   for (var i = this.length - 1; i >= 0; i--) {
     for (var j = 0; j < arr.length; j++) {
-      if (this[i] === arr[j]) {
+      if (this[i] == arr[j]) {
         this.splice(i, 1);
       }
     }

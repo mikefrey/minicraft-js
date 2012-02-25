@@ -9,7 +9,7 @@ function Chest() {
 }
 
 Chest.Super = Furniture.prototype;
-Chest.prototype = extend({}, new Furniture("Chest"), {
+Chest.prototype = extend(new Furniture("Chest"), {
 
   use : function(player, attackDir) {
     player.game.setMenu(new ContainerMenu(player, "Chest", inventory));

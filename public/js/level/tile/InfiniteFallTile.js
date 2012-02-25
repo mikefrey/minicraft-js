@@ -11,7 +11,7 @@ function InfiniteFallTile(id) {
 }
 
 InfiniteFallTile.Super = Tile.prototype;
-InfiniteFallTile.prototype = extend({}, new Tile(), {
+InfiniteFallTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {},
 

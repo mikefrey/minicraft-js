@@ -17,7 +17,7 @@ function CloudTile(id) {
 }
 
 CloudTile.Super = Tile.prototype;
-CloudTile.prototype = extend({}, new Tile(), {
+CloudTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(444, 444, 555, 555);

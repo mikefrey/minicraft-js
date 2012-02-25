@@ -17,7 +17,7 @@ function LevelGen(w, h, featureSize) {
 	var scale = 1.0 / w;
 	var scaleMod = 1;
 	do {
-		var halfStep = stepSize / 2;
+		var halfStep = stepSize / 2 | 0;
 		for (y = 0; y < h; y += stepSize) {
 			for (x = 0; x < w; x += stepSize) {
 				a = this.sample(x, y);
@@ -158,7 +158,7 @@ extend(LevelGen, {
 			}
 		}
 
-		for (var i = 0; i < w * h / 2800; i++) {
+		for (var i = 0, l = w * h / 2800; i < l; i++) {
 			var xs = random.nextInt(w);
 			var ys = random.nextInt(h);
 			for (var k = 0; k < 10; k++) {
@@ -181,7 +181,7 @@ extend(LevelGen, {
 		}
 
 
-		for (var i = 0; i < w * h / 400; i++) {
+		for (var i = 0, l = w * h / 400; i < l; i++) {
 			var x = random.nextInt(w);
 			var y = random.nextInt(h);
 			for (var j = 0; j < 200; j++) {
@@ -195,7 +195,7 @@ extend(LevelGen, {
 			}
 		}
 
-		for (var i = 0; i < w * h / 400; i++) {
+		for (var i = 0, l = w * h / 400; i < l; i++) {
 			var x = random.nextInt(w);
 			var y = random.nextInt(h);
 			var col = random.nextInt(4);
@@ -211,7 +211,7 @@ extend(LevelGen, {
 			}
 		}
 
-		for (var i = 0; i < w * h / 100; i++) {
+		for (var i = 0, l = w * h / 100; i < l; i++) {
 			var xx = random.nextInt(w);
 			var yy = random.nextInt(h);
 			if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -222,7 +222,7 @@ extend(LevelGen, {
 		}
 
 		var count = 0;
-		stairsLoop: for (var i = 0; i < w * h / 100; i++) {
+		stairsLoop: for (var i = 0, l = w * h / 100; i < l; i++) {
 			var x = random.nextInt(w - 2) + 1;
 			var y = random.nextInt(h - 2) + 1;
 
@@ -296,7 +296,7 @@ extend(LevelGen, {
 		}
 
 		var r = 2;
-		for (var i = 0; i < w * h / 400; i++) {
+		for (var i = 0, l = i < w * h / 400; i < l; i++) {
 			var x = random.nextInt(w);
 			var y = random.nextInt(h);
 			for (var j = 0; j < 30; j++) {
@@ -312,7 +312,7 @@ extend(LevelGen, {
 
 		if (depth < 3) {
 			var count = 0;
-			stairsLoop: for (var i = 0; i < w * h / 100; i++) {
+			stairsLoop: for (var i = 0, l = w * h / 100; i < l; i++) {
 				var x = random.nextInt(w - 20) + 10;
 				var y = random.nextInt(h - 20) + 10;
 
@@ -360,7 +360,7 @@ extend(LevelGen, {
 			}
 		}
 
-		stairsLoop: for (var i = 0; i < w * h / 50; i++) {
+		stairsLoop: for (var i = 0, l = w * h / 50; i < l; i++) {
 			var x = random.nextInt(w - 2) + 1;
 			var y = random.nextInt(h - 2) + 1;
 

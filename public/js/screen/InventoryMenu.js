@@ -16,7 +16,7 @@ function InventoryMenu(player) {
 }
 
 InventoryMenu.Super = Menu.prototype;
-InventoryMenu.prototype = extend({}, new Menu(), {
+InventoryMenu.prototype = extend(new Menu(), {
 
   tick: function() {
     var input = this.input;

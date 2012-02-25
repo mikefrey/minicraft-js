@@ -11,7 +11,7 @@ function TitleMenu() {
 }
 
 TitleMenu.Super = Menu.prototype;
-TitleMenu.prototype = extend({}, new Menu(), {
+TitleMenu.prototype = extend(new Menu(), {
 
 	tick: function() {
 		var input = this.input;
@@ -39,7 +39,7 @@ TitleMenu.prototype = extend({}, new Menu(), {
 		var h = 2;
 		var w = 13;
 		var titleColor = Color.get(0, 010, 131, 551);
-		var xo = (screen.w - w * 8) / 2;
+		var xo = (screen.w - w * 8) / 2 | 0;
 		var yo = 24;
 		for (var y = 0; y < h; y++) {
 			for (var x = 0; x < w; x++) {
@@ -54,7 +54,7 @@ TitleMenu.prototype = extend({}, new Menu(), {
 				msg = "> " + msg + " <";
 				col = Color.get(0, 555, 555, 555);
 			}
-			Font.draw(msg, screen, (screen.w - msg.length * 8) / 2, (8 + i) * 8, col);
+			Font.draw(msg, screen, (screen.w - msg.length * 8) / 2 | 0, (8 + i) * 8, col);
 		}
 
 		Font.draw('(Arrow keys, X and C)', screen, 0, screen.h - 8, Color.get(0, 111, 111, 111));

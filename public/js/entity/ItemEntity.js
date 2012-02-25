@@ -28,7 +28,7 @@ function ItemEntity(item, x, y) {
 }
 
 ItemEntity.Super = Entity.prototype;
-ItemEntity.prototype = extend({}, new Entity(), {
+ItemEntity.prototype = extend(new Entity(), {
 
   tick: function() {
     this.time++;
@@ -67,7 +67,7 @@ ItemEntity.prototype = extend({}, new Entity(), {
 
   render: function(screen) {
     if (this.time >= this.lifeTime - 6 * 20) {
-      if (this.time / 6 % 2 == 0) return;
+      if ((this.time / 6 % 2 | 0) == 0) return;
     }
     screen.render(this.x - 4, this.y - 4, this.item.getSprite(), Color.get(-1, 0, 0, 0), 0);
     screen.render(this.x - 4, this.y - 4 - Math.round(this.zz), this.item.getSprite(), this.item.getColor(), 0);

@@ -14,7 +14,7 @@ function PlantableResource(name, sprite, color, targetTile) {
 }
 
 PlantableResource.Super = Resource.prototype;
-PlantableResource.prototype = extend({}, new Resource(), {
+PlantableResource.prototype = extend(new Resource(), {
 
   interactOn: function(tile, level, xt, yt, player, attackDir) {
     if (~this.sourceTiles.indexOf(tile)) {

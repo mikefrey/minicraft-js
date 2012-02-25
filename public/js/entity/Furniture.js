@@ -18,7 +18,7 @@ function Furniture(name) {
 }
 
 Furniture.Super = Entity.prototype;
-Furniture.prototype = extend({}, new Entity(), {
+Furniture.prototype = extend(new Entity(), {
 
   tick: function() {
     if (this.shouldTake != null) {

@@ -17,7 +17,7 @@ function CactusTile(id) {
 }
 
 CactusTile.Super = Tile.prototype;
-CactusTile.prototype = extend({}, new Tile(), {
+CactusTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(20, 40, 50, level.sandColor);

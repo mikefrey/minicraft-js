@@ -13,7 +13,7 @@ function Item() {
 }
 
 Item.Super = ListItem.prototype;
-Item.prototype = extend({}, new ListItem(), {
+Item.prototype = extend(new ListItem(), {
 
 	getColor: function() {
 		return 0;

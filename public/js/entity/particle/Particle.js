@@ -7,7 +7,7 @@ function Particle() {
 }
 
 Particle.Super = Entity.prototype;
-Particle.prototype = extend({}, new Entity(), {
+Particle.prototype = extend(new Entity(), {
 
   tick: function() {}
 

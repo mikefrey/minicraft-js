@@ -34,7 +34,7 @@ Menu.prototype = {
     var i0 = 0;
     var i1 = listItems.length;
     if (i1 > h) i1 = h;
-    var io = selected - h / 2;
+    var io = selected - h / 2 | 0;
     if (io > listItems.length - h) io = listItems.length - h;
     if (io < 0) io = 0;
 

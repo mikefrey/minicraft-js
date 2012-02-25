@@ -20,7 +20,7 @@ function HardRockTile(id) {
 }
 
 HardRockTile.Super = Tile.prototype;
-HardRockTile.prototype = extend({}, new Tile(), {
+HardRockTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var color = Color.get(334, 334, 223, 223);

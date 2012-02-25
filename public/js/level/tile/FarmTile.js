@@ -14,7 +14,7 @@ function FarmTile(id) {
 }
 
 FarmTile.Super = Tile.prototype;
-FarmTile.prototype = extend({}, new Tile(), {
+FarmTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(level.dirtColor - 121, level.dirtColor - 11, level.dirtColor, level.dirtColor + 111);

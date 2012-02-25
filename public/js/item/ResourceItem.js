@@ -16,7 +16,7 @@ function ResourceItem(resource, count) {
 }
 
 ResourceItem.Super = Item.prototype;
-ResourceItem.prototype = extend({}, new Item(), {
+ResourceItem.prototype = extend(new Item(), {
 
   getColor: function() {
     return this.resource.color;

@@ -21,7 +21,7 @@ function Spark(owner, xa, ya) {
 }
 
 Spark.Super = Entity.prototype;
-Spark.prototype = extend({}, new Entity(), {
+Spark.prototype = extend(new Entity(), {
 
   tick: function() {
     this.time++;
@@ -48,7 +48,7 @@ Spark.prototype = extend({}, new Entity(), {
 
   render: function(screen) {
     if (this.time >= lifeTime - 6 * 20) {
-      if (this.time / 6 % 2 == 0) return;
+      if ((this.time / 6 % 2 | 0) == 0) return;
     }
 
     var xt = 8;

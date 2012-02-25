@@ -9,7 +9,7 @@ function InstructionsMenu(parent) {
 }
 
 InstructionsMenu.Super = Menu.prototype;
-InstructionsMenu.prototype = extend({}, new Menu(), {
+InstructionsMenu.prototype = extend(new Menu(), {
 
   tick: function() {
     if (this.input.attack.clicked || this.input.menu.clicked) {

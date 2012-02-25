@@ -251,7 +251,7 @@ Level.prototype = {
     this.trySpawn(1);
     var i, xt, yt, xto, yto, e;
 
-    for (i = 0; i < this.w * this.h / 50; i++) {
+    for (i = 0, l = this.w * this.h / 50; i < l; i++) {
       xt = random.nextInt(this.w);
       yt = random.nextInt(this.w); // should this be h?
       this.getTile(xt, yt).tick(this, xt, yt);

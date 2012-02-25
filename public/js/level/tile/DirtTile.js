@@ -17,7 +17,7 @@ function DirtTile(id) {
 }
 
 DirtTile.Super = Tile.prototype;
-DirtTile.prototype = extend({}, new Tile(), {
+DirtTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(level.dirtColor, level.dirtColor, level.dirtColor - 111, level.dirtColor - 111);

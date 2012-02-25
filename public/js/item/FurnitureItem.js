@@ -15,7 +15,7 @@ function FurnitureItem(furniture) {
 }
 
 FurnitureItem.Super = Item.prototype;
-FurnitureItem.prototype = extend({}, new Item(), {
+FurnitureItem.prototype = extend(new Item(), {
 
   getColor: function() {
     return this.furniture.col;

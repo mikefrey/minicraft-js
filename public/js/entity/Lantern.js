@@ -10,7 +10,7 @@ function Lantern() {
 }
 
 Lantern.Super = Furniture.prototype;
-Lantern.prototype = extend({}, new Furniture("Lantern"), {
+Lantern.prototype = extend(new Furniture("Lantern"), {
 
   getLightRadius: function() {
     return 8;

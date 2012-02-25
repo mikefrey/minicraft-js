@@ -11,7 +11,7 @@ function ToolRecipe(type, level) {
 }
 
 ToolRecipe.Super = Recipe.prototype;
-ToolRecipe.prototype = extend({}, new Recipe(), {
+ToolRecipe.prototype = extend(new Recipe(), {
 
   craft: function(player) {
     player.inventory.add(0, new ToolItem(type, level));

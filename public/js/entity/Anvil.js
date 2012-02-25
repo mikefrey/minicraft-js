@@ -12,7 +12,7 @@ function Anvil() {
 }
 
 Anvil.Super = Furniture.prototype;
-Anvil.prototype = extend({}, new Furniture("Anvil"), {
+Anvil.prototype = extend(new Furniture("Anvil"), {
 
   use: function(player, attackDir) {
     player.game.setMenu(new CraftingMenu(Crafting.anvilRecipes, player));

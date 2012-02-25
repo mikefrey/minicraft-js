@@ -15,7 +15,7 @@ function LavaTile(id) {
 }
 
 LavaTile.Super = Tile.prototype;
-LavaTile.prototype = extend({}, new Tile(), {
+LavaTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(3, 500, 520, 550);

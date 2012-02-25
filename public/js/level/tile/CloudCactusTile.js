@@ -20,7 +20,7 @@ function CloudCactusTile(id) {
 }
 
 CloudCactusTile.Super = Tile.prototype;
-CloudCactusTile.prototype = extend({}, new Tile(), {
+CloudCactusTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var color = Color.get(444, 111, 333, 555);

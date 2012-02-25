@@ -23,7 +23,7 @@ function Mob() {
 }
 
 Mob.Super = Entity.prototype;
-Mob.prototype = extend({}, new Entity(), {
+Mob.prototype = extend(new Entity(), {
 
   tick: function() {
     this.tickTime++;

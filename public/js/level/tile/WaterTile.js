@@ -6,7 +6,7 @@ function WaterTile(id) {
 }
 
 WaterTile.Super = Tile.prototype;
-WaterTile.prototype = extend({}, new Tile(), {
+WaterTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     //wRandom.setSeed((tickCount + (x / 2 - y) * 4311) / 10 * 54687121l + x * 3271612l + y * 3412987161l);

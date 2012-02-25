@@ -10,7 +10,7 @@ function FurnitureRecipe(clazz) {
 }
 
 FurnitureRecipe.Super = Recipe.prototype;
-FurnitureRecipe.prototype = extend({}, new Recipe(), {
+FurnitureRecipe.prototype = extend(new Recipe(), {
 
   craft: function(player) {
     player.inventory.add(0, new FurnitureItem(new clazz()));

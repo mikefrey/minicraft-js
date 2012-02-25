@@ -15,7 +15,7 @@ function ContainerMenu(player, title, container) {
 }
 
 ContainerMenu.Super = Menu.prototype;
-ContainerMenu.prototype = extend({}, new Menu(), {
+ContainerMenu.prototype = extend(new Menu(), {
 
   tick: function() {
     var input = this.input, tmp;

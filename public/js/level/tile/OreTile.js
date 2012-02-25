@@ -23,7 +23,7 @@ function OreTile(id, toDrop) {
 }
 
 OreTile.Super = Tile.prototype;
-OreTile.prototype = extend({}, new Tile(), {
+OreTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     this.color = (this.toDrop.color & 0xffffff00) + Color.get(level.dirtColor);

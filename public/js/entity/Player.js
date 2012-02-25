@@ -41,7 +41,7 @@ function Player(game, input) {
 }
 
 Player.Super = Mob.prototype;
-Player.prototype = extend({}, new Mob(), {
+Player.prototype = extend(new Mob(), {
 
   tick: function() {
     Player.Super.tick.call(this);
@@ -264,9 +264,9 @@ Player.prototype = extend({}, new Mob(), {
     var yo = y - 11;
     if (this.isSwimming()) {
       yo += 4;
-      var waterColor = Color.get(asHSL-1, -1, 115, 335);
-      if (this.tickTime / 8 % 2 == 0) {
-        waterColor = Color.get(asHSL-1, 335, 5, 115);
+      var waterColor = Color.get(-1, -1, 115, 335);
+      if (Math.floor(this.tickTime / 8) % 2 == 0) {
+        waterColor = Color.get(-1, 335, 5, 115);
       }
       screen.render(xo + 0, yo + 3, 5 + 13 * 32, waterColor, 0);
       screen.render(xo + 8, yo + 3, 5 + 13 * 32, waterColor, 1);

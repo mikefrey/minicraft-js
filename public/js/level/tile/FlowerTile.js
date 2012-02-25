@@ -19,13 +19,13 @@ function FlowerTile(id) {
 }
 
 FlowerTile.Super = GrassTile.prototype;
-FlowerTile.prototype = extend({}, new GrassTile(), {
+FlowerTile.prototype = extend(new GrassTile(), {
 
   render: function(screen, level, x, y) {
     FlowerTile.Super.render.call(this, screen, level, x, y);
 
     var data = level.getData(x, y);
-    var shape = (data / 16) % 2;
+    var shape = (data / 16) % 2 | 0;
     var flowerCol = Color.get(10, level.grassColor, 555, 440);
 
     if (shape == 0) screen.render(x * 16 + 0, y * 16 + 0, 1 + 1 * 32, flowerCol, 0);

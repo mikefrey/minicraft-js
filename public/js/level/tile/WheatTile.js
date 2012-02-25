@@ -4,20 +4,20 @@ function WheatTile(id) {
 }
 
 WheatTile.Super = Tile.prototype;
-WheatTile.prototype = extend({}, new Tile(), {
+WheatTile.prototype = extend(new Tile(), {
 
 	render: function(screen, level, x, y) {
 		var age = level.getData(x, y);
 		var col = Color.get(level.dirtColor - 121, level.dirtColor - 11, level.dirtColor, 50);
 		var icon = age / 10;
 		if (icon >= 3) {
-			col = Color.get(level.dirtColor - 121, level.dirtColor - 11, 50 + (icon) * 100, 40 + (icon - 3) * 2 * 100);
+			col = Color.get(level.dirtColor - 121, level.dirtColor - 11, 50 + (icon) * 100 | 0, 40 + (icon - 3) * 2 * 100 | 0);
 			if (age == 50) {
-				col = Color.get(0, 0, 50 + (icon) * 100, 40 + (icon - 3) * 2 * 100);
+				col = Color.get(0, 0, 50 + (icon) * 100 | 0, 40 + (icon - 3) * 2 * 100 | 0);
 			}
 			icon = 3;
 		}
-
+		icon = icon | 0;
 		screen.render(x * 16 + 0, y * 16 + 0, 4 + 3 * 32 + icon, col, 0);
 		screen.render(x * 16 + 8, y * 16 + 0, 4 + 3 * 32 + icon, col, 0);
 		screen.render(x * 16 + 0, y * 16 + 8, 4 + 3 * 32 + icon, col, 1);

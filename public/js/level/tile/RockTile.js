@@ -21,7 +21,7 @@ function RockTile(id) {
 }
 
 RockTile.Super = Tile.prototype;
-RockTile.prototype = extend({}, new Tile(), {
+RockTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(444, 444, 333, 333);

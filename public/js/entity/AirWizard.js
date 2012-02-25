@@ -20,7 +20,7 @@ function AirWizard() {
 }
 
 AirWizard.Super = Mob.prototype;
-AirWizard.prototype = extend({}, new Mob(), {
+AirWizard.prototype = extend(new Mob(), {
 
   tick: function() {
     AirWizard.Super.tick.call();
@@ -28,8 +28,8 @@ AirWizard.prototype = extend({}, new Mob(), {
     var speed, dir, xd, yd;
 
     if (this.attackDelay > 0) {
-      this.dir = (this.attackDelay - 45) / 4 % 4;
-      this.dir = (this.dir * 2 % 4) + (this.dir / 2);
+      this.dir = (this.attackDelay - 45) / 4 % 4 | 0;
+      this.dir = (this.dir * 2 % 4) + (this.dir / 2) | 0;
       if (this.attackDelay < 45) {
         this.dir = 0;
       }
@@ -123,12 +123,12 @@ AirWizard.prototype = extend({}, new Mob(), {
     var col1 = Color.get(-1, 100, 500, 555);
     var col2 = Color.get(-1, 100, 500, 532);
     if (this.health < 200) {
-      if (this.tickTime / 3 % 2 == 0) {
+      if (this.tickTime / 3 % 2 | 0 == 0) {
         col1 = Color.get(-1, 500, 100, 555);
         col2 = Color.get(-1, 500, 100, 532);
       }
     } else if (this.health < 1000) {
-      if (this.tickTime / 5 % 4 == 0) {
+      if ((this.tickTime / 5 % 4 | 0) == 0) {
         col1 = Color.get(-1, 500, 100, 555);
         col2 = Color.get(-1, 500, 100, 532);
       }

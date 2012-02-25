@@ -6,7 +6,7 @@ function StairsTile(id, leadsUp) {
 }
 
 StairsTile.Super = Tile.prototype;
-StairsTile.prototype = extend({}, new Tile(), {
+StairsTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var color = Color.get(level.dirtColor, 0, 333, 444);

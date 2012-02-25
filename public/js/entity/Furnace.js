@@ -12,7 +12,7 @@ function Furnace() {
 }
 
 Furnace.Super = Furniture.prototype;
-Furnace.prototype = extend({}, new Furniture("Furnace"), {
+Furnace.prototype = extend(new Furniture("Furnace"), {
 
   use: function(player, attackDir) {
     player.game.setMenu(new CraftingMenu(Crafting.furnaceRecipes, player));

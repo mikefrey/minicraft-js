@@ -9,7 +9,7 @@ function LevelTransitionMenu(dir) {
 }
 
 LevelTransitionMenu.Super = Menu.prototype;
-LevelTransitionMenu.prototype = extend({}, new Menu(), {
+LevelTransitionMenu.prototype = extend(new Menu(), {
 
   tick: function() {
     this.time += 2;
@@ -20,7 +20,7 @@ LevelTransitionMenu.prototype = extend({}, new Menu(), {
   render: function(screen) {
     for (var x = 0; x < 20; x++) {
       for (var y = 0; y < 15; y++) {
-        var dd = (y + x % 2 * 2 + x / 3) - time;
+        var dd = Math.floor(y + x % 2 * 2 + x / 3) - time;
         if (dd < 0 && dd > -30) {
           if (dir > 0) {
             screen.render(x * 8, y * 8, 0, 0, 0);

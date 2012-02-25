@@ -14,7 +14,7 @@ function HoleTile(id) {
 }
 
 HoleTile.Super = Tile.prototype;
-HoleTile.prototype = extend({}, new Tile(), {
+HoleTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(111, 111, 110, 110);

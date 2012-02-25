@@ -110,14 +110,14 @@ Game.prototype = {
     for (var r = 0; r < 6; r++) {
       for (var g = 0; g < 6; g++) {
         for (var b = 0; b < 6; b++) {
-          var rr = r * 255 / 5;
-          var gg = g * 255 / 5;
-          var bb = b * 255 / 5;
-          var mid = (rr * 30 + gg * 59 + bb * 11) / 100;
+          var rr = r * 255 / 5 | 0;
+          var gg = g * 255 / 5 | 0;
+          var bb = b * 255 / 5 | 0;
+          var mid = (rr * 30 + gg * 59 + bb * 11) / 100 | 0;
 
-          var r1 = ((rr + mid * 1) / 2) * 230 / 255 + 10;
-          var g1 = ((gg + mid * 1) / 2) * 230 / 255 + 10;
-          var b1 = ((bb + mid * 1) / 2) * 230 / 255 + 10;
+          var r1 = ((rr + mid * 1) / 2) * 230 / 255 + 10 | 0;
+          var g1 = ((gg + mid * 1) / 2) * 230 / 255 + 10 | 0;
+          var b1 = ((bb + mid * 1) / 2) * 230 / 255 + 10 | 0;
           this.colors[pp++] = r1 << 16 | g1 << 8 | b1;
         }
       }
@@ -221,8 +221,8 @@ Game.prototype = {
   render: function() {
     var screen = this.screen;
     var player = this.player;
-    var xScroll = player.x - screen.w / 2;
-    var yScroll = player.y - (screen.h - 8) / 2;
+    var xScroll = player.x - screen.w / 2 | 0;
+    var yScroll = player.y - (screen.h - 8) / 2 | 0;
 
     var y, x;
 

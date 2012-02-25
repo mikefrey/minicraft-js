@@ -13,7 +13,7 @@ function PowerGloveItem() {
 }
 
 PowerGloveItem.Super = Item.prototype;
-PowerGloveItem.prototype = extend({}, new Item(), {
+PowerGloveItem.prototype = extend(new Item(), {
 
   getColor: function() {
     return Color.get(-1, 100, 320, 430);

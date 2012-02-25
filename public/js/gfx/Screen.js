@@ -39,14 +39,14 @@ Screen.prototype = {
 		var dw = 8 * 3;
 		var dh = 8 * 3;
 
-		// if (mirrorX) {
-		// 	dx += dw;
-		// 	dw *= -1;
-		// }
-		// if (mirrorY) {
-		// 	dy += dh;
-		// 	dw *= -1;
-		// }
+		if (mirrorX) {
+			dx -= dw;
+			dw *= -1;
+		}
+		if (mirrorY) {
+			dy += dh;
+			dw *= -1;
+		}
 		this.ctx.drawImage(this.sheet.image, xTile * 8, yTile * 8, 8, 8, dx, dy, dw, dh);
 
 		// for (var y = 0; y < 8; y++) {
@@ -102,7 +102,7 @@ Screen.prototype = {
 				var dist = xd * xd + yd;
 				// console.log(dist);
 				if (dist <= r * r) {
-					var br = 255 - dist * 255 / (r * r);
+					var br = 255 - dist * 255 / (r * r) | 0;
 					if (this.pixels[xx + yy * w] < br) pixels[xx + yy * w] = br;
 				}
 			}

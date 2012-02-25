@@ -19,7 +19,7 @@ function GrassTile(id) {
 }
 
 GrassTile.Super = Tile.prototype;
-GrassTile.prototype = extend({}, new Tile(), {
+GrassTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(level.grassColor, level.grassColor, level.grassColor + 111, level.grassColor + 111);

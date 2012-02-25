@@ -13,7 +13,7 @@ function ResourceRecipe(resource) {
 }
 
 ResourceRecipe.Super = Recipe.prototype;
-ResourceRecipe.prototype = extend({}, new Recipe(), {
+ResourceRecipe.prototype = extend(new Recipe(), {
 
   craft: function(player) {
     player.inventory.add(0, new ResourceItem(this.resource, 1));

@@ -17,7 +17,7 @@ function Zombie(lvl) {
 }
 
 Zombie.Super = Mob.prototype;
-Zombie.prototype = extend({}, new Mob(), {
+Zombie.prototype = extend(new Mob(), {
 
   tick: function() {
     Zombie.Super.tick.call(this);

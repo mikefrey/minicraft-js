@@ -18,7 +18,7 @@ function Slime(lvl) {
 }
 
 Slime.Super = Mob.prototype;
-Slime.prototype = extend({}, new Mob(), {
+Slime.prototype = extend(new Mob(), {
 
   tick: function() {
     Slime.Super.tick.call(this);

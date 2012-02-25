@@ -5,7 +5,7 @@ function SandTile(id) {
 }
 
 SandTile.Super = Tile.prototype;
-SandTile.prototype = extend({}, new Tile(), {
+SandTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var col = Color.get(level.sandColor + 2, level.sandColor, level.sandColor - 110, level.sandColor - 110);

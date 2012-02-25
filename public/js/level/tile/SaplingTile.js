@@ -11,7 +11,7 @@ function SaplingTile(id, onType, growsTo) {
 }
 
 SaplingTile.Super = Tile.prototype;
-SaplingTile.prototype = extend({}, new Tile(), {
+SaplingTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     onType.render(screen, level, x, y);

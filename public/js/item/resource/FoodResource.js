@@ -11,7 +11,7 @@ function FoodResource(name, sprite, color, heal, staminaCost) {
 }
 
 FoodResource.Super = Resource.prototype;
-FoodResource.prototype = extend({}, new Resource(), {
+FoodResource.prototype = extend(new Resource(), {
 
   interactOn: function(tile, level, xt, yt, player, attackDir) {
     if (player.health < player.maxHealth && player.payStamina(this.staminaCost)) {

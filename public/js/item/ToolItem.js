@@ -24,7 +24,7 @@ ToolItem.LEVEL_COLORS = [
 ];
 
 ToolItem.Super = Item.prototype;
-ToolItem.prototype = extend({}, new Item(), {
+ToolItem.prototype = extend(new Item(), {
 
   getColor: function() {
     return ToolItem.LEVEL_COLORS[this.level];

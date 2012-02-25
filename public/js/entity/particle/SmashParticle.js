@@ -14,7 +14,7 @@ function SmashParticle(x, y) {
 }
 
 SmashParticle.Super = Entity.prototype;
-SmashParticle.prototype = extend({}, new Entity(), {
+SmashParticle.prototype = extend(new Entity(), {
 
   tick: function() {
     this.time++;

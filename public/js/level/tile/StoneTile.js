@@ -5,7 +5,7 @@ function StoneTile(id) {
 }
 
 StoneTile.Super = Tile.prototype;
-StoneTile.prototype = extend({}, new Tile(), {
+StoneTile.prototype = extend(new Tile(), {
 
   render: function(screen, level, x, y) {
     var rc1 = 111;
