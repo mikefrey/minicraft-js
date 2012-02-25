@@ -31,7 +31,7 @@ Screen.prototype = {
 		var mirrorY = (bits & Screen.BIT_MIRROR_Y) > 0;
 
 		var xTile = tile % 32;
-		var yTile = tile / 32;
+		var yTile = Math.floor(tile / 32);
 		var toffs = xTile * 8 + yTile * 8 * this.sheet.width;
 
 		var dx = xp * 3;
@@ -39,14 +39,14 @@ Screen.prototype = {
 		var dw = 8 * 3;
 		var dh = 8 * 3;
 
-		if (mirrorX) {
-			dx += dw;
-			dw *= -1;
-		}
-		if (mirrorY) {
-			dy += dh;
-			dw *= -1;
-		}
+		// if (mirrorX) {
+		// 	dx += dw;
+		// 	dw *= -1;
+		// }
+		// if (mirrorY) {
+		// 	dy += dh;
+		// 	dw *= -1;
+		// }
 		this.ctx.drawImage(this.sheet.image, xTile * 8, yTile * 8, 8, 8, dx, dy, dw, dh);
 
 		// for (var y = 0; y < 8; y++) {
