@@ -44,7 +44,7 @@ function Level(w, h, level, parentLevel) {
     this.dirtColor = 222;
   }
   else if (level == 1) {
-    dirtColor = 444;
+    this.dirtColor = 444;
   }
 
   if (level == 0) {
@@ -54,7 +54,7 @@ function Level(w, h, level, parentLevel) {
     this.monsterDensity = 4;
   } else {
     maps = LevelGen.createAndValidateSkyMap(w, h);
-    monsterDensity = 4;
+    this.monsterDensity = 4;
   }
 
   this.tiles = maps[0];
@@ -249,7 +249,7 @@ Level.prototype = {
 
   tick: function() {
     this.trySpawn(1);
-    var i, xt, yt, xto, yto, e;
+    var i, l, xt, yt, xto, yto, e;
 
     for (i = 0, l = this.w * this.h / 50; i < l; i++) {
       xt = random.nextInt(this.w);

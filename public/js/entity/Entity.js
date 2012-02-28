@@ -28,6 +28,7 @@ Entity.prototype = {
   },
 
   init: function(level) {
+    this.uid = Entity.uid();
     this.level = level;
   },
 
@@ -76,8 +77,8 @@ Entity.prototype = {
     for (yt = yt0; yt <= yt1; yt++)
       for (xt = xt0; xt <= xt1; xt++) {
         if (xt >= xto0 && xt <= xto1 && yt >= yto0 && yt <= yto1) continue;
-        level.getTile(xt, yt).bumpedInto(level, xt, yt, this);
-        if (!level.getTile(xt, yt).mayPass(level, xt, yt, this)) {
+        this.level.getTile(xt, yt).bumpedInto(this.level, xt, yt, this);
+        if (!this.level.getTile(xt, yt).mayPass(this.level, xt, yt, this)) {
           blocked = true;
           return false;
         }
@@ -102,8 +103,8 @@ Entity.prototype = {
       }
     }
 
-    x += xa;
-    y += ya;
+    this.x += xa;
+    this.y += ya;
     return true;
   },
 
@@ -129,11 +130,19 @@ Entity.prototype = {
 
   getLightRadius: function() {
     return 0;
+  },
+
+  isBlockableBy: function(mob) {
+    return true;
   }
 
 };
 
 
+Entity.uid = function() {
+  return Entity.nextUid++;
+}
+Entity.nextUid = 0;
 
 
   // protected void touchedBy(Entity entity) {

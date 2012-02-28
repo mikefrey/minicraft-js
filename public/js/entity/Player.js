@@ -88,7 +88,7 @@ Player.prototype = extend(new Mob(), {
       if (this.stamina > 0) {
         this.stamina--;
       } else {
-        this.hurt(this, 1, dir ^ 1);
+        this.hurt(this, 1, this.dir ^ 1);
       }
     }
 

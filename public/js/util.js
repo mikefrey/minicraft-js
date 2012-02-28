@@ -17,10 +17,12 @@ Array.prototype.remove = function(item) {
 };
 
 Array.prototype.removeAll = function(arr) {
-  for (var i = this.length - 1; i >= 0; i--) {
-    for (var j = 0; j < arr.length; j++) {
-      if (this[i] == arr[j]) {
+  //for (var i = this.length - 1; i >= 0; i--) {
+  for (var j = 0; j < arr.length; j++) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i].uid === arr[j].uid) {
         this.splice(i, 1);
+        break;
       }
     }
   }

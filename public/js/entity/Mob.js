@@ -43,7 +43,7 @@ Mob.prototype = extend(new Entity(), {
 
   move: function(xa, ya) {
     if (this.isSwimming()) {
-      if (swimTimer++ % 2 == 0) return true;
+      if (this.swimTimer++ % 2 == 0) return true;
     }
     if (this.xKnockback < 0) {
       this.move2(-1, 0);
@@ -64,10 +64,10 @@ Mob.prototype = extend(new Entity(), {
     if (this.hurtTime > 0) return true;
     if (xa != 0 || ya != 0) {
       this.walkDist++;
-      if (xa < 0) dir = 2;
-      if (xa > 0) dir = 3;
-      if (ya < 0) dir = 1;
-      if (ya > 0) dir = 0;
+      if (xa < 0) this.dir = 2;
+      if (xa > 0) this.dir = 3;
+      if (ya < 0) this.dir = 1;
+      if (ya > 0) this.dir = 0;
     }
     return Mob.Super.move.call(this, xa, ya);
   },
@@ -107,13 +107,13 @@ Mob.prototype = extend(new Entity(), {
     if (this.hurtTime > 0) return;
 
     if (this.level.player != null) {
-      var xd = this.level.player.x - x;
-      var yd = this.level.player.y - y;
+      var xd = this.level.player.x - this.x;
+      var yd = this.level.player.y - this.y;
       if (xd * xd + yd * yd < 80 * 80) {
         Sound.mosterHurt.play();
       }
     }
-    this.level.add(new TextParticle(damage, x, y, Color.get(-1, 500, 500, 500)));
+    this.level.add(new TextParticle(damage, this.x, this.y, Color.get(-1, 500, 500, 500)));
     this.health -= damage;
     if (attackDir == 0) this.yKnockback = +6;
     if (attackDir == 1) this.yKnockback = -6;

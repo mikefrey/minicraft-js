@@ -40,7 +40,6 @@ Screen.prototype = {
 		var dh = 8 * 3;
 
 		if (mirrorX) {
-			dx -= dw;
 			dw *= -1;
 		}
 		if (mirrorY) {
