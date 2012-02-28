@@ -90,8 +90,11 @@ Mob.prototype = extend(new Entity(), {
   //  this.doHurt(damage, attackDir);
   // },
 
-  hurt: function(damage, attackDir) {
-    attackDir = attackDir == null ? this.dir ^ 1 : attackDir;
+  hurt: function(mob, damage, attackDir) {
+    if (arguments.length == 4) {
+      attackDir = this.dir ^ 1;
+      damage = arguments[3];
+    }
     this.doHurt(damage, attackDir);
   },
 
@@ -110,7 +113,7 @@ Mob.prototype = extend(new Entity(), {
       var xd = this.level.player.x - this.x;
       var yd = this.level.player.y - this.y;
       if (xd * xd + yd * yd < 80 * 80) {
-        Sound.mosterHurt.play();
+        Sound.monsterHurt.play();
       }
     }
     this.level.add(new TextParticle(damage, this.x, this.y, Color.get(-1, 500, 500, 500)));

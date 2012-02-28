@@ -1,37 +1,44 @@
 
-function Img(path, fn) {
-  this.path = path;
-  this.fn = fn;
+// function Img(path, fn) {
+//   this.path = path;
+//   this.fn = fn;
 
-  this._img = new Image();
-  this._img.onload = this.onload.bind(this);
-  this._img.onerror = this.onerror.bind(this);
-  this._img.src = path;
-}
+//   this._img = new Image();
+//   this._img.onload = this.onload.bind(this);
+//   this._img.onerror = this.onerror.bind(this);
+//   this._img.src = path;
+// }
 
-Img.prototype = {
+// Img.prototype = {
 
-  getData: function(x, y, w, h) {
-    return this.ctx.getImageData(x, y, w, h);
-  },
+//   getData: function(x, y, w, h) {
+//     return this.ctx.getImageData(x, y, w, h);
+//   },
 
-  onload: function() {
-    var canvas = document.createElement('canvas');
-    canvas.height = this.height;
-    canvas.width = this.width;
-    document.body.appendChild(canvas);
+//   onload: function() {
+//     var canvas = document.createElement('canvas');
+//     canvas.height = this.height * 2;
+//     canvas.width = this.width * 2;
+//     document.body.appendChild(canvas);
 
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(this._img, 0, 0);
+//     var ctx = canvas.getContext('2d');
+//     ctx.drawImage(this._img, 0, 0);
+//     ctx.scale(-1, 1);
+//     ctx.drawImage(this._img, this.width, 0);
+//     ctx.scale(1, -1);
+//     ctx.drawImage(this._img, 0, this.height);
+//     ctx.scale(-1, -1);
+//     ctx.drawImage(this._img, this.width, this.height);
+//     ctx.scale(1, 1);
 
-    this.fn();
-  },
+//     this.fn();
+//   },
 
-  onerror: function() {
-    console.log("IMAGE LOAD ERROR:", arguments);
-  }
+//   onerror: function() {
+//     console.log("IMAGE LOAD ERROR:", arguments);
+//   }
 
-};
+// };
 
 
 
@@ -48,13 +55,28 @@ Images.prototype = {
       // this.width = this._img.width;
       // this.height = this._img.height;
 
-      var canvas = document.createElement('canvas');
-      canvas.height = img.height;
-      canvas.width = img.width;
+      canvas.height = img.height * 2;
+      canvas.width = img.width * 2;
       document.body.appendChild(canvas);
 
       var ctx = canvas.getContext('2d');
+
       ctx.drawImage(img, 0, 0);
+
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.drawImage(img, -img.width*2, 0);
+      ctx.restore();
+
+      ctx.save();
+      ctx.scale(1, -1);
+      ctx.drawImage(img, 0, -img.height*2);
+      ctx.restore();
+
+      ctx.save();
+      ctx.scale(-1, -1);
+      ctx.drawImage(img, -img.width*2, -img.height*2);
+      ctx.restore()
 
       fn();
     }
@@ -64,7 +86,11 @@ Images.prototype = {
     img.onerror = this.onerror.bind(this);
     img.src = path;
 
-    this[name] = img;
+
+    var canvas = document.createElement('canvas');
+    canvas.style.display = 'none';
+
+    this[name] = canvas;
   },
 
   onerror: function() {

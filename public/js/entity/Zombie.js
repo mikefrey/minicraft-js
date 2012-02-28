@@ -57,7 +57,7 @@ Zombie.prototype = extend(new Mob(), {
     if (this.dir > 1) {
       flip1 = 0;
       flip2 = ((this.walkDist >> 4) & 1);
-      if (dir == 2) {
+      if (this.dir == 2) {
         flip1 = 1;
       }
       xt += 4 + ((this.walkDist >> 3) & 1) * 2;

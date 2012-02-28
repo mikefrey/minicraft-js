@@ -29,8 +29,8 @@
 
 
 function Game(canvasID) {
-  this.canvas = document.getElementById(canvasID);
-  this.ctx = canvas.getContext('2d');
+  this.canvas = document.getElementById('canvas');
+  this.ctx = this.canvas.getContext('2d');
 
   this.image = null;
   this.pixels = [];
@@ -125,7 +125,7 @@ Game.prototype = {
 
     //try {
       this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons), this.ctx);
-      this.lightScreen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons), this.ctx);
+      //this.lightScreen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet(images.icons), this.ctx);
     //} catch (e) {
     //  console.log(e);
     //}
@@ -241,13 +241,14 @@ Game.prototype = {
     this.level.renderBackground(screen, xScroll, yScroll);
     this.level.renderSprites(screen, xScroll, yScroll);
 
-    if (this.currentLevel < 3) {
-      this.lightScreen.clear(0);
-      this.level.renderLight(this.lightScreen, xScroll, yScroll);
-      screen.overlay(this.lightScreen, xScroll, yScroll);
-    }
+    // if (this.currentLevel < 3) {
+    //   this.lightScreen.clear(0);
+    //   this.level.renderLight(this.lightScreen, xScroll, yScroll);
+    //   screen.overlay(this.lightScreen, xScroll, yScroll);
+    // }
 
     this.renderGui();
+
 
     // for (y = 0; y < screen.h; y++) {
     //   for (x = 0; x < screen.w; x++) {

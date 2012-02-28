@@ -39,14 +39,19 @@ Screen.prototype = {
 		var dw = 8 * 3;
 		var dh = 8 * 3;
 
+		var sx = xTile * 8;
+		var sy = yTile * 8;
 		if (mirrorX) {
-			dw *= -1;
+			sx = this.sheet.image.width - sx - 8;
 		}
 		if (mirrorY) {
-			dy += dh;
-			dw *= -1;
+			sy = this.sheet.image.height - sy - 8;
 		}
-		this.ctx.drawImage(this.sheet.image, xTile * 8, yTile * 8, 8, 8, dx, dy, dw, dh);
+		//if (mirrorX || mirrorY)
+		//  this.ctx.scale(sx, sy);
+		this.ctx.drawImage(this.sheet.image, sx, sy, 8, 8, dx, dy, dw, dh);
+		//if (mirrorX || mirrorY)
+		//  this.ctx.scale(1, 1);
 
 		// for (var y = 0; y < 8; y++) {
 		// 	var ys = y;
