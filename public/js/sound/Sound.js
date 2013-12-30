@@ -26,6 +26,7 @@ extend(Sound, {
   enabled: true,
 
   formats: [
+    {ext: 'wav', mime: 'audio/wav'},
     {ext: 'mp3', mime: 'audio/mpeg'},
     {ext: 'ogg', mime: 'audio/ogg; codecs=vorbis'}
   ],

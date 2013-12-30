@@ -30,6 +30,8 @@
 
 function Game(canvasID) {
   this.canvas = document.getElementById('canvas');
+  //WebGL2D.enable(this.canvas);
+  //this.ctx = this.canvas.getContext('webgl-2d');
   this.ctx = this.canvas.getContext('2d');
 
   this.image = null;
