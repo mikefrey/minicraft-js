@@ -104,9 +104,7 @@ function Level(w, h, level, parentLevel) {
 Level.prototype = {
 
   spriteSorter: function(e0, e1) {
-    if (e1.y < e0.y) return +1;
-    if (e1.y > e0.y) return -1;
-    return 0;
+    return e0.y - e1.y
   },
 
   renderBackground: function(screen, xScroll, yScroll) {

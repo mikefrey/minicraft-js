@@ -98,8 +98,11 @@
   <script src="js/InputHandler.js"></script>
   <script src="js/Game.js"></script>
 
-  <script src="https://raw.github.com/corbanbrook/webgl-2d/master/webgl-2d.js"></script>
+  <!--<script src="https://raw.github.com/corbanbrook/webgl-2d/master/webgl-2d.js"></script>-->
 
+  <style>
+    body { background-color: darkgrey; }
+  </style>
 </head>
 <body>
   <div>
@@ -110,7 +113,8 @@
 
   <script>
     var game = new Game();
-    images.add('icons', 'res/icons.png', function(){
+    images.add('icons', 'res/icons-old.png', function(){
+      console.log('READY')
       //game.start();
     });
   </script>

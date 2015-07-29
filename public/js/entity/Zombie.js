@@ -82,7 +82,7 @@ Zombie.prototype = extend(new Mob(), {
 
   touchedBy: function(entity) {
     if (entity instanceof Player) {
-      entity.hurt(this, this.lvl + 1, dir);
+      entity.hurt(this, this.lvl + 1, this.dir);
     }
   },
 
@@ -95,7 +95,7 @@ Zombie.prototype = extend(new Mob(), {
     }
 
     if (this.level.player != null) {
-      level.player.score += 50 * this.lvl;
+      this.level.player.score += 50 * this.lvl;
     }
   }
 

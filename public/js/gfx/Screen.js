@@ -6,7 +6,7 @@ function Screen(w, h, sheet, ctx) {
 	this.w = w;
 	this.h = h;
 
-	this.pixels = [];
+	this.pixels = []; //ctx.createImageData(w, h);
 
 	this.xOffset = 0;
 	this.yOffset = 0;
@@ -34,39 +34,46 @@ Screen.prototype = {
 		var yTile = Math.floor(tile / 32);
 		var toffs = xTile * 8 + yTile * 8 * this.sheet.width;
 
-		var dx = xp * 3;
-		var dy = yp * 3;
-		var dw = 8 * 3;
-		var dh = 8 * 3;
+		for (var y = 0; y < 8; y++) {
+			var ys = y;
+			if (mirrorY) ys = 7 - y;
+			if (y + yp < 0 || y + yp >= this.h) continue;
+			for (var x = 0; x < 8; x++) {
+				if (x + xp < 0 || x + xp >= this.w) continue;
 
-		var sx = xTile * 8;
-		var sy = yTile * 8;
-		if (mirrorX) {
-			sx = this.sheet.image.width - sx - 8;
+				var xs = x;
+				if (mirrorX) xs = 7 - x;
+				var col = (colors >> (this.sheet.pixels.data[xs + ys * this.sheet.width + toffs] * 8)) & 255;
+				if (col < 255) this.pixels[(x + xp) + (y + yp) * this.w] = col;
+			}
 		}
-		if (mirrorY) {
-			sy = this.sheet.image.height - sy - 8;
-		}
-		//if (mirrorX || mirrorY)
-		//  this.ctx.scale(sx, sy);
-		this.ctx.drawImage(this.sheet.image, sx, sy, 8, 8, dx, dy, dw, dh);
-		//if (mirrorX || mirrorY)
-		//  this.ctx.scale(1, 1);
 
-		// for (var y = 0; y < 8; y++) {
-		// 	var ys = y;
-		// 	if (mirrorY) ys = 7 - y;
-		// 	if (y + yp < 0 || y + yp >= this.h) continue;
-		// 	for (var x = 0; x < 8; x++) {
-		// 		if (x + xp < 0 || x + xp >= this.w) continue;
-
-		// 		var xs = x;
-		// 		if (mirrorX) xs = 7 - x;
-		// 		var col = (colors >> (this.sheet.pixels[xs + ys * this.sheet.width + toffs] * 8)) & 255;
-		// 		if (col < 255) this.pixels[(x + xp) + (y + yp) * this.w] = col;
-		// 	}
-		// }
 	},
+
+	// 	public void render(int xp, int yp, int tile, int colors, int bits) {
+	// 		xp -= xOffset;
+	// 		yp -= yOffset;
+	// 		boolean mirrorX = (bits & BIT_MIRROR_X) > 0;
+	// 		boolean mirrorY = (bits & BIT_MIRROR_Y) > 0;
+
+	// 		int xTile = tile % 32;
+	// 		int yTile = tile / 32;
+	// 		int toffs = xTile * 8 + yTile * 8 * sheet.width;
+
+	// 		for (int y = 0; y < 8; y++) {
+	// 			int ys = y;
+	// 			if (mirrorY) ys = 7 - y;
+	// 			if (y + yp < 0 || y + yp >= h) continue;
+	// 			for (int x = 0; x < 8; x++) {
+	// 				if (x + xp < 0 || x + xp >= w) continue;
+
+	// 				int xs = x;
+	// 				if (mirrorX) xs = 7 - x;
+	// 				int col = (colors >> (sheet.pixels[xs + ys * sheet.width + toffs] * 8)) & 255;
+	// 				if (col < 255) pixels[(x + xp) + (y + yp) * w] = col;
+	// 			}
+	// 		}
+	// 	}
 
 	setOffset: function(xOffset, yOffset) {
 		this.xOffset = xOffset;
@@ -107,7 +114,7 @@ Screen.prototype = {
 				// console.log(dist);
 				if (dist <= r * r) {
 					var br = 255 - dist * 255 / (r * r) | 0;
-					if (this.pixels[xx + yy * w] < br) pixels[xx + yy * w] = br;
+					if (this.pixels[xx + yy * w] < br) this.pixels[xx + yy * w] = br;
 				}
 			}
 		}

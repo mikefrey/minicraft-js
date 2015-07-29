@@ -41,6 +41,10 @@ Entity.prototype = {
     return false;
   },
 
+  hurt: function(thing, a, b, c) {
+    if (thing instanceof Mob) return this.hurtMob(thing, a, b)
+    if (thing instanceof Tile) return this.hurtTile(thing, a, b, c)
+  },
   hurtMob: function(mob, dmg, attackDir) { },
   hurtTile: function(tile, x, y, dmg) { },
 
@@ -266,4 +270,3 @@ Entity.nextUid = 0;
   //  y += ya;
   //  return true;
   // }
-

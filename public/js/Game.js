@@ -35,7 +35,7 @@ function Game(canvasID) {
   this.ctx = this.canvas.getContext('2d');
 
   this.image = null;
-  this.pixels = [];
+  this.pixels = this.ctx.createImageData(Game.WIDTH, Game.HEIGHT);
   this.running = false;
   this.screen = null;
   this.lightScreen = null;
@@ -252,37 +252,29 @@ Game.prototype = {
     this.renderGui();
 
 
-    // for (y = 0; y < screen.h; y++) {
-    //   for (x = 0; x < screen.w; x++) {
-    //     var cc = screen.pixels[x + y * screen.w];
-    //     if (cc < 255) this.pixels[x + y * Game.WIDTH] = this.colors[cc];
-    //   }
-    // }
+    for (y = 0; y < screen.h; y++) {
+      for (x = 0; x < screen.w; x++) {
+        var cc = screen.pixels[x + y * screen.w];
+        if (cc < 255) {
+          var p = (x + y * Game.WIDTH) * 4
+          var c = this.colors[cc]
 
-    // TODO : setImageData on canvas
-    // Graphics g = bs.getDrawGraphics();
-    // g.fillRect(0, 0, getWidth(), getHeight());
+          // this.pixels.data[p + 0] = cc;
+          // this.pixels.data[p + 1] = cc;
+          // this.pixels.data[p + 2] = cc;
 
-    // int ww = WIDTH * 3;
-    // int hh = HEIGHT * 3;
-    // int xo = (getWidth() - ww) / 2;
-    // int yo = (getHeight() - hh) / 2;
-    // g.drawImage(image, xo, yo, ww, hh, null);
-    // g.dispose();
-    // bs.show();
+          this.pixels.data[p + 0] = c >> 16;
+          this.pixels.data[p + 1] = c >> 8 & 255;
+          this.pixels.data[p + 2] = c & 255;
+          this.pixels.data[p + 3] = 255;
+        }
+      }
+    }
 
-    // var ww = Game.WIDTH * Game.SCALE;
-    // var hh = Game.HEIGHT * Game.SCALE;
-    // var imgData = this.ctx.createImageData(ww, hh);
-    // var len = imgData.data.length;
 
-    // for (var i = 0; i < len; i+=3) {
-    //   imgData.data[i+0] = this.pixels[i+0];
-    //   imgData.data[i+1] = this.pixels[i+1];
-    //   imgData.data[i+2] = this.pixels[i+2];
-    // }
+    this.ctx.putImageData(this.pixels, 0, 0); //, ww, hh);
 
-    // this.ctx.putImageData(imgData, 0, 0); //, ww, hh);
+    // throw "stop"
   },
 
   renderGui: function() {
