@@ -5,22 +5,18 @@
 // import com.mojang.ld22.level.Level;
 // import com.mojang.ld22.level.tile.Tile;
 
-function Resource() { }
-
-Resource.prototype = {
-
-  init: function(name, sprite, color) {
-    if (name.length > 6) throw 'Name cannot be longer than six characters!';
-    this.name = name;
-    this.sprite = sprite;
-    this.color = color;
-  },
-
-  interactOn: function(tile, level, xt, yt, player, attackDir) {
-    return false;
+class Resource {
+  constructor(name, sprite, color) {
+    if (name.length > 6) throw 'Name cannot be longer than six characters!'
+    this.name = name
+    this.sprite = sprite
+    this.color = color
   }
 
-};
+  interactOn(tile, level, xt, yt, player, attackDir) {
+    return false
+  }
+}
 
 
 // public class Resource {

@@ -5,53 +5,53 @@
 // import com.mojang.ld22.gfx.Screen;
 // import com.mojang.ld22.sound.Sound;
 
-function TitleMenu() {
-	this.selected = 0;
-	this.options = ['Start game', 'How to play', 'About'];
-}
+class TitleMenu extends Menu {
 
-TitleMenu.Super = Menu.prototype;
-TitleMenu.prototype = extend(new Menu(), {
+  constructor() {
+    super()
+    this.selected = 0
+    this.options = ['Start game', 'How to play', 'About']
+  }
 
-	tick: function() {
-		var input = this.input;
-		if (input.up.clicked) this.selected--;
-		if (input.down.clicked) this.selected++;
+  tick() {
+		const input = this.input
+		if (input.up.clicked) this.selected--
+		if (input.down.clicked) this.selected++
 
-		var len = this.options.length;
-		if (this.selected < 0) this.selected += len;
-		if (this.selected >= len) this.selected -= len;
+		const len = this.options.length
+		if (this.selected < 0) this.selected += len
+		if (this.selected >= len) this.selected -= len
 
 		if (input.attack.clicked || input.menu.clicked) {
 			if (this.selected == 0) {
-				Sound.test.play();
-				this.game.resetGame();
-				this.game.setMenu(null);
+				Sound.test.play()
+				this.game.resetGame()
+				this.game.setMenu(null)
 			}
-			if (this.selected == 1) this.game.setMenu(new InstructionsMenu(this));
-			if (this.selected == 2) this.game.setMenu(new AboutMenu(this));
+			if (this.selected == 1) this.game.setMenu(new InstructionsMenu(this))
+			if (this.selected == 2) this.game.setMenu(new AboutMenu(this))
 		}
-	},
+	}
 
-	render: function(screen) {
+  render(screen) {
 		screen.clear(0);
 
-		var h = 2;
-		var w = 13;
-		var titleColor = Color.get(0, 010, 131, 551);
-		var xo = (screen.w - w * 8) / 2 | 0;
-		var yo = 24;
-		for (var y = 0; y < h; y++) {
-			for (var x = 0; x < w; x++) {
+		const h = 2;
+		const w = 13;
+		const titleColor = Color.get(0, 10, 131, 551);
+		const xo = (screen.w - w * 8) / 2 | 0;
+		const yo = 24;
+		for (let y = 0; y < h; y++) {
+			for (let x = 0; x < w; x++) {
 				screen.render(xo + x * 8, yo + y * 8, x + (y + 6) * 32, titleColor, 0);
 			}
 		}
 
-		for (var i = 0; i < 3; i++) {
-			var msg = this.options[i];
-			var col = Color.get(0, 222, 222, 222);
+		for (let i = 0; i < 3; i++) {
+			let msg = this.options[i];
+			let col = Color.get(0, 222, 222, 222);
 			if (i == this.selected) {
-				msg = "> " + msg + " <";
+				msg = `> ${msg} <`;
 				col = Color.get(0, 555, 555, 555);
 			}
 			Font.draw(msg, screen, (screen.w - msg.length * 8) / 2 | 0, (8 + i) * 8, col);
@@ -59,8 +59,7 @@ TitleMenu.prototype = extend(new Menu(), {
 
 		Font.draw('(Arrow keys, X and C)', screen, 0, screen.h - 8, Color.get(0, 111, 111, 111));
 	}
-
-});
+}
 
 
 

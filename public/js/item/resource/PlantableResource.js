@@ -7,24 +7,22 @@
 // import com.mojang.ld22.level.Level;
 // import com.mojang.ld22.level.tile.Tile;
 
-function PlantableResource(name, sprite, color, targetTile) {
-  this.init(name, sprite, color);
-  this.sourceTiles = Array.prototype.slice.call(arguments, 4);
-  this.targetTile = targetTile;
-}
+class PlantableResource extends Resource {
+  constructor(name, sprite, color, targetTile) {
+    super(name, sprite, color);
+    this.sourceTiles = Array.prototype.slice.call(arguments, 4);
+    this.targetTile = targetTile;
+  }
 
-PlantableResource.Super = Resource.prototype;
-PlantableResource.prototype = extend(new Resource(), {
-
-  interactOn: function(tile, level, xt, yt, player, attackDir) {
+  interactOn(tile, level, xt, yt, player, attackDir) {
     if (~this.sourceTiles.indexOf(tile)) {
       level.setTile(xt, yt, targetTile, 0);
       return true;
     }
     return false;
   }
+}
 
-});
 
 
 // public class PlantableResource extends Resource {

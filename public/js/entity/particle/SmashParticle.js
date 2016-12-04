@@ -5,33 +5,32 @@
 // import com.mojang.ld22.gfx.Screen;
 // import com.mojang.ld22.sound.Sound;
 
-function SmashParticle(x, y) {
-  this.x = x;
-  this.y = y;
-  Sound.monsterHurt.play();
+class SmashParticle extends Entity {
+  constructor(x, y) {
+    super()
+    this.x = x
+    this.y = y
+    Sound.monsterHurt.play()
 
-  this.time = 0;
-}
-
-SmashParticle.Super = Entity.prototype;
-SmashParticle.prototype = extend(new Entity(), {
-
-  tick: function() {
-    this.time++;
-    if (this.time > 10) {
-      this.remove();
-    }
-  },
-
-  render: function(screen) {
-    var col = Color.get(-1, 555, 555, 555);
-    screen.render(this.x - 8, this.y - 8, 5 + 12 * 32, col, 2);
-    screen.render(this.x - 0, this.y - 8, 5 + 12 * 32, col, 3);
-    screen.render(this.x - 8, this.y - 0, 5 + 12 * 32, col, 0);
-    screen.render(this.x - 0, this.y - 0, 5 + 12 * 32, col, 1);
+    this.time = 0
   }
 
-});
+  tick() {
+    this.time++
+    if (this.time > 15) {
+      this.remove()
+    }
+  }
+
+  render(screen) {
+    const col = Color.get(-1, 555, 555, 555)
+    screen.render(this.x - 8, this.y - 8, 5 + 12 * 32, col, 2)
+    screen.render(this.x - 0, this.y - 8, 5 + 12 * 32, col, 3)
+    screen.render(this.x - 8, this.y - 0, 5 + 12 * 32, col, 0)
+    screen.render(this.x - 0, this.y - 0, 5 + 12 * 32, col, 1)
+  }
+}
+
 
 
 // public class SmashParticle extends Entity {

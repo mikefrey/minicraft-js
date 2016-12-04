@@ -5,80 +5,75 @@
 // import java.util.ArrayList;
 // import java.util.List;
 
-function Key(combo) {
-  this.presses = 0;
-  this.absorbs = 0;
-  this.down = false;
-  this.clicked = false;
-  this.combo = combo;
+class Key {
+  constructor(combo) {
+    this.presses = 0
+    this.absorbs = 0
+    this.down = false
+    this.clicked = false
+    this.combo = combo
 
-  KeyboardJS.bind.key(
-    combo,
-    this.onDown.bind(this),
-    this.onUp.bind(this)
-  );
-}
+    KeyboardJS.bind.key(
+      combo,
+      this.onDown.bind(this),
+      this.onUp.bind(this)
+    )
+  }
 
-Key.prototype = {
+  onDown(ev) {
+    this.down = true
+    this.presses++
+  }
 
-  onDown: function(ev) {
-    this.down = true;
-    this.presses++;
-  },
-
-  onUp: function(ev) {
-    this.down = false;
-  },
+  onUp(ev) {
+    this.down = false
+  }
 
   // toggle: function(pressed) {
   //   if (pressed != this.down) {
-  //     this.down = pressed;
+  //     this.down = pressed
   //   }
   //   if (pressed) {
-  //     this.presses++;
+  //     this.presses++
   //   }
   // },
 
-  tick: function() {
+  tick() {
     if (this.absorbs < this.presses) {
-      this.absorbs++;
-      this.clicked = true;
+      this.absorbs++
+      this.clicked = true
     } else {
-      this.clicked = false;
+      this.clicked = false
     }
   }
-
-};
-
-
-function InputHandler(game) {
-  this.keys = [];
-
-  this.up = new Key('num8, w, up');
-  this.down = new Key('num2, s, down');
-  this.left = new Key('num4, a, left');
-  this.right = new Key('num6, d, right');
-  this.attack = new Key('c, space, ctrl, num0, insert');
-  this.menu = new Key('x, tab, alt, enter');
-
-  this.keys.push(this.up, this.down, this.left, this.right, this.attack, this.menu);
 }
 
-InputHandler.prototype = {
+class InputHandler {
+  constructor(game) {
+    this.keys = []
 
-  releaseAll: function() {
-    for (var i = 0; i < keys.length; i++) {
-      keys[i].down = false;
-    }
-  },
+    this.up = new Key('num8, w, up')
+    this.down = new Key('num2, s, down')
+    this.left = new Key('num4, a, left')
+    this.right = new Key('num6, d, right')
+    this.attack = new Key('c, space, ctrl, num0, insert')
+    this.menu = new Key('x, tab, alt, enter')
 
-  tick: function() {
-    for (var i = 0; i < this.keys.length; i++) {
-      this.keys[i].tick();
+    this.keys.push(this.up, this.down, this.left, this.right, this.attack, this.menu)
+  }
+
+  releaseAll() {
+    for (let i = 0; i < keys.length; i++) {
+      keys[i].down = false
     }
   }
 
-};
+  tick() {
+    for (let i = 0; i < this.keys.length; i++) {
+      this.keys[i].tick()
+    }
+  }
+}
 
 
 

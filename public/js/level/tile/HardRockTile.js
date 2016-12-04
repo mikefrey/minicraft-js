@@ -15,105 +15,105 @@
 // import com.mojang.ld22.item.resource.Resource;
 // import com.mojang.ld22.level.Level;
 
-function HardRockTile(id) {
-  HardRockTile.Super.init.call(this, id);
-}
+class HardRockTile extends Tile {
 
-HardRockTile.Super = Tile.prototype;
-HardRockTile.prototype = extend(new Tile(), {
+  constructor(id) {
+    super(id)
+  }
 
-  render: function(screen, level, x, y) {
-    var color = Color.get(334, 334, 223, 223);
-    var transitionColor = Color.get(1, 334, 445, level.dirtColor);
+  render(screen, level, x, y) {
+    const color = Color.get(334, 334, 223, 223)
+    const transitionColor = Color.get(1, 334, 445, level.dirtColor)
 
-    var u = level.getTile(x, y - 1) != this;
-    var d = level.getTile(x, y + 1) != this;
-    var l = level.getTile(x - 1, y) != this;
-    var r = level.getTile(x + 1, y) != this;
+    const u = level.getTile(x, y - 1) != this
+    const d = level.getTile(x, y + 1) != this
+    const l = level.getTile(x - 1, y) != this
+    const r = level.getTile(x + 1, y) != this
 
-    var ul = level.getTile(x - 1, y - 1) != this;
-    var dl = level.getTile(x - 1, y + 1) != this;
-    var ur = level.getTile(x + 1, y - 1) != this;
-    var dr = level.getTile(x + 1, y + 1) != this;
+    const ul = level.getTile(x - 1, y - 1) != this
+    const dl = level.getTile(x - 1, y + 1) != this
+    const ur = level.getTile(x + 1, y - 1) != this
+    const dr = level.getTile(x + 1, y + 1) != this
 
     if (!u && !l) {
       if (!ul)
-        screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0);
+        screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0)
       else
-        screen.render(x * 16 + 0, y * 16 + 0, 7 + 0 * 32, transitionColor, 3);
+        screen.render(x * 16 + 0, y * 16 + 0, 7 + 0 * 32, transitionColor, 3)
     } else
-      screen.render(x * 16 + 0, y * 16 + 0, (l ? 6 : 5) + (u ? 2 : 1) * 32, transitionColor, 3);
+      screen.render(x * 16 + 0, y * 16 + 0, (l ? 6 : 5) + (u ? 2 : 1) * 32, transitionColor, 3)
 
     if (!u && !r) {
       if (!ur)
-        screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0);
+        screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0)
       else
-        screen.render(x * 16 + 8, y * 16 + 0, 8 + 0 * 32, transitionColor, 3);
+        screen.render(x * 16 + 8, y * 16 + 0, 8 + 0 * 32, transitionColor, 3)
     } else
-      screen.render(x * 16 + 8, y * 16 + 0, (r ? 4 : 5) + (u ? 2 : 1) * 32, transitionColor, 3);
+      screen.render(x * 16 + 8, y * 16 + 0, (r ? 4 : 5) + (u ? 2 : 1) * 32, transitionColor, 3)
 
     if (!d && !l) {
       if (!dl)
-        screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0);
+        screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0)
       else
-        screen.render(x * 16 + 0, y * 16 + 8, 7 + 1 * 32, transitionColor, 3);
+        screen.render(x * 16 + 0, y * 16 + 8, 7 + 1 * 32, transitionColor, 3)
     } else
-      screen.render(x * 16 + 0, y * 16 + 8, (l ? 6 : 5) + (d ? 0 : 1) * 32, transitionColor, 3);
+      screen.render(x * 16 + 0, y * 16 + 8, (l ? 6 : 5) + (d ? 0 : 1) * 32, transitionColor, 3)
     if (!d && !r) {
       if (!dr)
-        screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0);
+        screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0)
       else
-        screen.render(x * 16 + 8, y * 16 + 8, 8 + 1 * 32, transitionColor, 3);
+        screen.render(x * 16 + 8, y * 16 + 8, 8 + 1 * 32, transitionColor, 3)
     } else
-      screen.render(x * 16 + 8, y * 16 + 8, (r ? 4 : 5) + (d ? 0 : 1) * 32, transitionColor, 3);
-  },
+      screen.render(x * 16 + 8, y * 16 + 8, (r ? 4 : 5) + (d ? 0 : 1) * 32, transitionColor, 3)
+  }
 
-  mayPass: function(level, x, y, e) {
-    return false;
-  },
+  mayPass(level, x, y, e) {
+    return false
+  }
 
-  // hurt: function(level, x, y, source, dmg, attackDir) {
-  //  this.hurt.call(this, level, x, y, 0);
-  // },
-
-  interact: function(level, xt, yt, player, item, attackDir) {
+  interact(level, xt, yt, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if (tool.type == ToolType.pickaxe && tool.level == 4) {
         if (player.payStamina(4 - tool.level)) {
-          this.hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
-          return true;
+          this.hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10)
+          return true
         }
       }
     }
-    return false;
-  },
-
-  hurt: function(level, x, y, dmg) {
-    var damage = level.getData(x, y) + dmg, i;
-    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8));
-    level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)));
-    if (damage >= 200) {
-      var count = random.nextInt(4) + 1;
-      for (i = 0; i < count; i++) {
-        level.add(new ItemEntity(new ResourceItem(Resource.stone), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-      }
-      count = random.nextInt(2);
-      for (i = 0; i < count; i++) {
-        level.add(new ItemEntity(new ResourceItem(Resource.coal), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-      }
-      level.setTile(x, y, Tile.dirt, 0);
-    } else {
-      level.setData(x, y, damage);
-    }
-  },
-
-  tick: function(level, xt, yt) {
-    var damage = level.getData(xt, yt);
-    if (damage > 0) level.setData(xt, yt, damage - 1);
+    return false
   }
 
-});
+  // hurt(level, x, y, source, dmg, attackDir) {
+  //  this.hurt(level, x, y, 0)
+  // },
+
+  hurt(level, x, y, dmg) {
+    if (arguments.length == 6) dmg = 0
+    
+    const damage = level.getData(x, y) + dmg
+    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8))
+    level.add(new TextParticle(`${dmg}`, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)))
+    if (damage >= 200) {
+      let count = random.nextInt(4) + 1
+      for (let i = 0; i < count; i++) {
+        level.add(new ItemEntity(new ResourceItem(Resource.stone), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+      }
+      count = random.nextInt(2);
+      for (let i = 0; i < count; i++) {
+        level.add(new ItemEntity(new ResourceItem(Resource.coal), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+      }
+      level.setTile(x, y, Tile.dirt, 0)
+    } else {
+      level.setData(x, y, damage)
+    }
+  }
+
+  tick(level, xt, yt) {
+    const damage = level.getData(xt, yt)
+    if (damage > 0) level.setData(xt, yt, damage - 1)
+  }
+}
 
 
 

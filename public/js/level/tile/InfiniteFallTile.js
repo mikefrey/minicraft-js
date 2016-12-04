@@ -6,23 +6,19 @@
 // import com.mojang.ld22.level.Level;
 
 
-function InfiniteFallTile(id) {
-  InfiniteFallTile.Super.init.call(this, id);
-}
-
-InfiniteFallTile.Super = Tile.prototype;
-InfiniteFallTile.prototype = extend(new Tile(), {
-
-  render: function(screen, level, x, y) {},
-
-  tick: function(level, xt, yt) {},
-
-  mayPass: function(level, x, y, e) {
-    if (e instanceof AirWizard) return true;
-    return false;
+class InfiniteFallTile extends Tile {
+  constructor(id) {
+    super(id)
   }
 
-});
+  render(screen, level, x, y) {}
+  tick(level, xt, yt) {}
+
+  mayPass(level, x, y, e) {
+    if (e instanceof AirWizard) return true
+    return false
+  }
+}
 
 
 // public class InfiniteFallTile extends Tile {

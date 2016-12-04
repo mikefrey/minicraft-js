@@ -19,386 +19,391 @@
 // import com.mojang.ld22.screen.InventoryMenu;
 // import com.mojang.ld22.sound.Sound;
 
+class Player extends Mob {
 
-function Player(game, input) {
-  this.inventory = new Inventory();
-  this.attackItem = null;
-  this.activeItem = null;
-  this.staminaRecharge = 0;
-  this.staminaRechargeDelay = 0;
-  this.score = 0;
-  this.onStairDelay = 0;
-  this.invulnerableTime = 0;
+  constructor(game, input) {
+    super()
+    this.inventory = new Inventory()
+    this.attackItem = null
+    this.activeItem = null
+    this.staminaRecharge = 0
+    this.staminaRechargeDelay = 0
+    this.score = 0
+    this.onStairDelay = 0
+    this.invulnerableTime = 0
 
-  this.game = game;
-  this.input = input;
-  this.x = 24;
-  this.y = 24;
-  this.stamina = this.maxStamina = 10;
+    this.game = game
+    this.input = input
+    this.x = 24
+    this.y = 24
+    this.stamina = this.maxStamina = 10
 
-  this.inventory.add(new FurnitureItem(new Workbench()));
-  this.inventory.add(new PowerGloveItem());
-}
+    this.inventory.add(new FurnitureItem(new Workbench()))
+    this.inventory.add(new PowerGloveItem())
+  }
 
-Player.Super = Mob.prototype;
-Player.prototype = extend(new Mob(), {
+  tick() {
+    super.tick()
 
-  tick: function() {
-    Player.Super.tick.call(this);
-
-    if (this.invulnerableTime > 0) this.invulnerableTime--;
-    var onTile = this.level.getTile(this.x >> 4, this.y >> 4);
+    if (this.invulnerableTime > 0) this.invulnerableTime--
+    const onTile = this.level.getTile(this.x >> 4, this.y >> 4)
     if (onTile == Tile.stairsDown || onTile == Tile.stairsUp) {
       if (this.onStairDelay == 0) {
-        this.changeLevel((onTile == Tile.stairsUp) ? 1 : -1);
-        this.onStairDelay = 10;
-        return;
+        this.changeLevel((onTile == Tile.stairsUp) ? 1 : -1)
+        this.onStairDelay = 10
+        return
       }
-      this.onStairDelay = 10;
+      this.onStairDelay = 10
     } else {
-      if (this.onStairDelay > 0) this.onStairDelay--;
+      if (this.onStairDelay > 0) this.onStairDelay--
     }
 
     if (this.stamina <= 0 && this.staminaRechargeDelay == 0 && this.staminaRecharge == 0) {
-      this.staminaRechargeDelay = 40;
+      this.staminaRechargeDelay = 40
     }
 
     if (this.staminaRechargeDelay > 0) {
-      this.staminaRechargeDelay--;
+      this.staminaRechargeDelay--
     }
 
     if (this.staminaRechargeDelay == 0) {
-      this.staminaRecharge++;
+      this.staminaRecharge++
       if (this.isSwimming()) {
-        this.staminaRecharge = 0;
+        this.staminaRecharge = 0
       }
       while (this.staminaRecharge > 10) {
-        this.staminaRecharge -= 10;
-        if (this.stamina < this.maxStamina) this.stamina++;
+        this.staminaRecharge -= 10
+        if (this.stamina < this.maxStamina) this.stamina++
       }
     }
 
-    var xa = 0;
-    var ya = 0;
-    if (this.input.up.down) ya--;
-    if (this.input.down.down) ya++;
-    if (this.input.left.down) xa--;
-    if (this.input.right.down) xa++;
+    let xa = 0
+    let ya = 0
+    if (this.input.up.down) ya--
+    if (this.input.down.down) ya++
+    if (this.input.left.down) xa--
+    if (this.input.right.down) xa++
     if (this.isSwimming() && this.tickTime % 60 == 0) {
       if (this.stamina > 0) {
-        this.stamina--;
+        this.stamina--
       } else {
-        this.hurt(this, 1, this.dir ^ 1);
+        this.hurt(this, 1, this.dir ^ 1)
       }
     }
 
     if (this.staminaRechargeDelay % 2 == 0) {
-      this.move(xa, ya);
+      this.move(xa, ya)
     }
 
     if (this.input.attack.clicked) {
       if (this.stamina == 0) {
 
       } else {
-        this.stamina--;
-        this.staminaRecharge = 0;
-        this.attack();
+        this.stamina--
+        this.staminaRecharge = 0
+        this.attack()
       }
     }
     if (this.input.menu.clicked) {
       if (!this.tryUse()) {
-        this.game.setMenu(new InventoryMenu(this));
+        this.game.setMenu(new InventoryMenu(this))
       }
     }
-    if (this.attackTime > 0) this.attackTime--;
+    if (this.attackTime > 0) this.attackTime--
 
-  },
+  }
 
-  tryUse: function() {
-    var yo = -2;
-    var x = this.x;
-    var y = this.y;
-    if (this.dir == 0 && this.use(x - 8, y + 4 + yo, x + 8, y + 12 + yo)) return true;
-    if (this.dir == 1 && this.use(x - 8, y - 12 + yo, x + 8, y - 4 + yo)) return true;
-    if (this.dir == 3 && this.use(x + 4, y - 8 + yo, x + 12, y + 8 + yo)) return true;
-    if (this.dir == 2 && this.use(x - 12, y - 8 + yo, x - 4, y + 8 + yo)) return true;
+  tryUse() {
+    const yo = -2
+    const x = this.x
+    const y = this.y
+    if (this.dir == 0 && this.use(x - 8, y + 4 + yo, x + 8, y + 12 + yo)) return true
+    if (this.dir == 1 && this.use(x - 8, y - 12 + yo, x + 8, y - 4 + yo)) return true
+    if (this.dir == 3 && this.use(x + 4, y - 8 + yo, x + 12, y + 8 + yo)) return true
+    if (this.dir == 2 && this.use(x - 12, y - 8 + yo, x - 4, y + 8 + yo)) return true
 
-    var xt = x >> 4;
-    var yt = (y + yo) >> 4;
-    var r = 12;
-    if (this.attackDir == 0) yt = (y + r + yo) >> 4;
-    if (this.attackDir == 1) yt = (y - r + yo) >> 4;
-    if (this.attackDir == 2) xt = (x - r) >> 4;
-    if (this.attackDir == 3) xt = (x + r) >> 4;
+    let xt = x >> 4
+    let yt = (y + yo) >> 4
+    const r = 12
+    if (this.attackDir == 0) yt = (y + r + yo) >> 4
+    if (this.attackDir == 1) yt = (y - r + yo) >> 4
+    if (this.attackDir == 2) xt = (x - r) >> 4
+    if (this.attackDir == 3) xt = (x + r) >> 4
 
     if (xt >= 0 && yt >= 0 && xt < this.level.w && yt < this.level.h) {
-      if (this.level.getTile(xt, yt).use(this.level, xt, yt, this, this.attackDir)) return true;
+      if (this.level.getTile(xt, yt).use(this.level, xt, yt, this, this.attackDir)) return true
     }
 
-    return false;
-  },
+    return false
+  }
 
-  attack: function() {
-    this.walkDist += 8;
-    this.attackDir = this.dir;
-    this.attackItem = this.activeItem;
-    var done = false;
-    var x = this.x;
-    var y = this.y;
-    var yo, range, xt, yt, r;
+  attack() {
+    this.walkDist += 8
+    this.attackDir = this.dir
+    this.attackItem = this.activeItem
+    let done = false
+    const x = this.x
+    const y = this.y
+    let yo
+    let range
+    let xt
+    let yt
+    let r
 
     if (this.activeItem != null) {
-      this.attackTime = 10;
-      yo = -2;
-      range = 12;
-      if (this.dir == 0 && this.interact(x - 8, y + 4 + yo, x + 8, y + range + yo)) done = true;
-      if (this.dir == 1 && this.interact(x - 8, y - range + yo, x + 8, y - 4 + yo)) done = true;
-      if (this.dir == 2 && this.interact(x + 4, y - 8 + yo, x + range, y + 8 + yo)) done = true;
-      if (this.dir == 3 && this.interact(x - range, y - 8 + yo, x - 4, y + 8 + yo)) done = true;
-      if (done) return;
+      this.attackTime = 10
+      yo = -2
+      range = 12
+      if (this.dir == 0 && this.interact(x - 8, y + 4 + yo, x + 8, y + range + yo)) done = true
+      if (this.dir == 1 && this.interact(x - 8, y - range + yo, x + 8, y - 4 + yo)) done = true
+      if (this.dir == 2 && this.interact(x + 4, y - 8 + yo, x + range, y + 8 + yo)) done = true
+      if (this.dir == 3 && this.interact(x - range, y - 8 + yo, x - 4, y + 8 + yo)) done = true
+      if (done) return
 
-      xt = x >> 4;
-      yt = (y + yo) >> 4;
-      r = 12;
-      if (this.attackDir == 0) yt = (y + r + yo) >> 4;
-      if (this.attackDir == 1) yt = (y - r + yo) >> 4;
-      if (this.attackDir == 2) xt = (x - r) >> 4;
-      if (this.attackDir == 3) xt = (x + r) >> 4;
+      xt = x >> 4
+      yt = (y + yo) >> 4
+      r = 12
+      if (this.attackDir == 0) yt = (y + r + yo) >> 4
+      if (this.attackDir == 1) yt = (y - r + yo) >> 4
+      if (this.attackDir == 2) xt = (x - r) >> 4
+      if (this.attackDir == 3) xt = (x + r) >> 4
 
       if (xt >= 0 && yt >= 0 && xt < this.level.w && yt < this.level.h) {
         if (this.activeItem.interactOn(this.level.getTile(xt, yt), this.level, xt, yt, this, this.attackDir)) {
-          done = true;
+          done = true
         } else {
           if (this.level.getTile(xt, yt).interact(this.level, xt, yt, this, this.activeItem, this.attackDir)) {
-            done = true;
+            done = true
           }
         }
         if (this.activeItem.isDepleted()) {
-          this.activeItem = null;
+          this.activeItem = null
         }
       }
     }
 
-    if (done) return;
+    if (done) return
 
     if (this.activeItem == null || this.activeItem.canAttack()) {
-      this.attackTime = 5;
-      yo = -2;
-      range = 20;
-      if (this.dir == 0) this.hurt(x - 8, y + 4 + yo, x + 8, y + range + yo);
-      if (this.dir == 1) this.hurt(x - 8, y - range + yo, x + 8, y - 4 + yo);
-      if (this.dir == 3) this.hurt(x + 4, y - 8 + yo, x + range, y + 8 + yo);
-      if (this.dir == 2) this.hurt(x - range, y - 8 + yo, x - 4, y + 8 + yo);
+      this.attackTime = 5
+      yo = -2
+      range = 20
+      if (this.dir == 0) this.hurt(x - 8, y + 4 + yo, x + 8, y + range + yo)
+      if (this.dir == 1) this.hurt(x - 8, y - range + yo, x + 8, y - 4 + yo)
+      if (this.dir == 3) this.hurt(x + 4, y - 8 + yo, x + range, y + 8 + yo)
+      if (this.dir == 2) this.hurt(x - range, y - 8 + yo, x - 4, y + 8 + yo)
 
-      xt = x >> 4;
-      yt = (y + yo) >> 4;
-      r = 12;
-      if (this.attackDir == 0) yt = (y + r + yo) >> 4;
-      if (this.attackDir == 1) yt = (y - r + yo) >> 4;
-      if (this.attackDir == 2) xt = (x - r) >> 4;
-      if (this.attackDir == 3) xt = (x + r) >> 4;
+      xt = x >> 4
+      yt = (y + yo) >> 4
+      r = 12
+      if (this.attackDir == 0) yt = (y + r + yo) >> 4
+      if (this.attackDir == 1) yt = (y - r + yo) >> 4
+      if (this.attackDir == 2) xt = (x - r) >> 4
+      if (this.attackDir == 3) xt = (x + r) >> 4
 
       if (xt >= 0 && yt >= 0 && xt < this.level.w && yt < this.level.h) {
-        this.level.getTile(xt, yt).hurt(this.level, xt, yt, this, random.nextInt(3) + 1, this.attackDir);
+        this.level.getTile(xt, yt).hurt(this.level, xt, yt, this, random.nextInt(3) + 1, this.attackDir)
       }
     }
-  },
+  }
 
-  use: function(x0, y0, x1, y1) {
-    var entities = this.level.getEntities(x0, y0, x1, y1);
-    for (var i = 0; i < entities.length; i++) {
-      var e = entities[i];
-      if (e != this) if (e.use(this, this.attackDir)) return true;
+  use(x0, y0, x1, y1) {
+    const entities = this.level.getEntities(x0, y0, x1, y1)
+
+    for (const e of entities) {
+      if (e != this) if (e.use(this, this.attackDir)) return true
     }
-    return false;
-  },
 
-  interact: function(x0, y0, x1, y1) {
-    var entities = this.level.getEntities(x0, y0, x1, y1);
-    for (var i = 0; i < entities.length; i++) {
-      var e = entities[i];
-      if (e != this) if (e.interact(this, this.activeItem, this.attackDir)) return true;
+    return false
+  }
+
+  interact(x0, y0, x1, y1) {
+    const entities = this.level.getEntities(x0, y0, x1, y1)
+
+    for (const e of entities) {
+      if (e != this) if (e.interact(this, this.activeItem, this.attackDir)) return true
     }
-    return false;
-  },
 
-  hurt: function(x0, y0, x1, y1) {
-    var entities = this.level.getEntities(x0, y0, x1, y1);
-    for (var i = 0; i < entities.length; i++) {
-      var e = entities[i];
-      if (e != this) e.hurt(this, this.getAttackDamage(e), this.attackDir);
+    return false
+  }
+
+  hurt(x0, y0, x1, y1) {
+    const entities = this.level.getEntities(x0, y0, x1, y1)
+
+    for (const e of entities) {
+      if (e != this) e.hurt(this, this.getAttackDamage(e), this.attackDir)
     }
-  },
+  }
 
-  getAttackDamage: function(e) {
-    var dmg = random.nextInt(3) + 1;
+  getAttackDamage(e) {
+    let dmg = random.nextInt(3) + 1
     if (this.attackItem != null) {
-      dmg += this.attackItem.getAttackDamageBonus(e);
+      dmg += this.attackItem.getAttackDamageBonus(e)
     }
-    return dmg;
-  },
+    return dmg
+  }
 
-  render: function(screen) {
-    var x = this.x;
-    var y = this.y;
+  render(screen) {
+    const x = this.x
+    const y = this.y
 
-    var xt = 0;
-    var yt = 14;
+    let xt = 0
+    let yt = 14
 
-    var flip1 = (this.walkDist >> 3) & 1;
-    var flip2 = (this.walkDist >> 3) & 1;
+    let flip1 = (this.walkDist >> 3) & 1
+    let flip2 = (this.walkDist >> 3) & 1
 
     if (this.dir == 1) {
-      xt += 2;
+      xt += 2
     }
     if (this.dir > 1) {
-      flip1 = 0;
-      flip2 = (this.walkDist >> 4) & 1;
+      flip1 = 0
+      flip2 = (this.walkDist >> 4) & 1
       if (this.dir == 2) {
-        flip1 = 1;
+        flip1 = 1
       }
-      xt += 4 + ((this.walkDist >> 3) & 1) * 2;
+      xt += 4 + ((this.walkDist >> 3) & 1) * 2
     }
 
-    var xo = x - 8;
-    var yo = y - 11;
+    const xo = x - 8
+    let yo = y - 11
     if (this.isSwimming()) {
-      yo += 4;
-      var waterColor = Color.get(-1, -1, 115, 335);
+      yo += 4
+      let waterColor = Color.get(-1, -1, 115, 335)
       if (Math.floor(this.tickTime / 8) % 2 == 0) {
-        waterColor = Color.get(-1, 335, 5, 115);
+        waterColor = Color.get(-1, 335, 5, 115)
       }
-      screen.render(xo + 0, yo + 3, 5 + 13 * 32, waterColor, 0);
-      screen.render(xo + 8, yo + 3, 5 + 13 * 32, waterColor, 1);
+      screen.render(xo + 0, yo + 3, 5 + 13 * 32, waterColor, 0)
+      screen.render(xo + 8, yo + 3, 5 + 13 * 32, waterColor, 1)
     }
 
 
-    var attackColor = Color.get(-1, 555, 555, 555);
+    const attackColor = Color.get(-1, 555, 555, 555)
     if (this.attackTime > 0 && this.attackDir == 1) {
-      screen.render(xo + 0, yo - 4, 6 + 13 * 32, attackColor, 0);
-      screen.render(xo + 8, yo - 4, 6 + 13 * 32, attackColor, 1);
+      screen.render(xo + 0, yo - 4, 6 + 13 * 32, attackColor, 0)
+      screen.render(xo + 8, yo - 4, 6 + 13 * 32, attackColor, 1)
       if (this.attackItem != null) {
-        this.attackItem.renderIcon(screen, xo + 4, yo - 4);
+        this.attackItem.renderIcon(screen, xo + 4, yo - 4)
       }
     }
-    var col = Color.get(-1, 100, 220, 532);
+    let col = Color.get(-1, 100, 220, 532)
     if (this.hurtTime > 0) {
-      col = Color.get(-1, 555, 555, 555);
+      col = Color.get(-1, 555, 555, 555)
     }
 
     if (this.activeItem instanceof FurnitureItem) {
-      yt += 2;
+      yt += 2
     }
-    screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col, flip1);
-    screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col, flip1);
+    // flip1 = flip2 = 0
+    screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col, flip1)
+    screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col, flip1)
     if (!this.isSwimming()) {
-      screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col, flip2);
-      screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col, flip2);
+      screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col, flip2)
+      screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col, flip2)
     }
 
     if (this.attackTime > 0 && this.attackDir == 2) {
-      screen.render(xo - 4, yo, 7 + 13 * 32, attackColor, 1);
-      screen.render(xo - 4, yo + 8, 7 + 13 * 32, attackColor, 3);
+      screen.render(xo - 4, yo, 7 + 13 * 32, attackColor, 1)
+      screen.render(xo - 4, yo + 8, 7 + 13 * 32, attackColor, 3)
       if (this.attackItem != null) {
-        this.attackItem.renderIcon(screen, xo - 4, yo + 4);
+        this.attackItem.renderIcon(screen, xo - 4, yo + 4)
       }
     }
     if (this.attackTime > 0 && this.attackDir == 3) {
-      screen.render(xo + 8 + 4, yo, 7 + 13 * 32, attackColor, 0);
-      screen.render(xo + 8 + 4, yo + 8, 7 + 13 * 32, attackColor, 2);
+      screen.render(xo + 8 + 4, yo, 7 + 13 * 32, attackColor, 0)
+      screen.render(xo + 8 + 4, yo + 8, 7 + 13 * 32, attackColor, 2)
       if (this.attackItem != null) {
-        this.attackItem.renderIcon(screen, xo + 8 + 4, yo + 4);
+        this.attackItem.renderIcon(screen, xo + 8 + 4, yo + 4)
       }
     }
     if (this.attackTime > 0 && this.attackDir == 0) {
-      screen.render(xo + 0, yo + 8 + 4, 6 + 13 * 32, attackColor, 2);
-      screen.render(xo + 8, yo + 8 + 4, 6 + 13 * 32, attackColor, 3);
+      screen.render(xo + 0, yo + 8 + 4, 6 + 13 * 32, attackColor, 2)
+      screen.render(xo + 8, yo + 8 + 4, 6 + 13 * 32, attackColor, 3)
       if (this.attackItem != null) {
-        this.attackItem.renderIcon(screen, xo + 4, yo + 8 + 4);
+        this.attackItem.renderIcon(screen, xo + 4, yo + 8 + 4)
       }
     }
 
     if (this.activeItem instanceof FurnitureItem) {
-      var furniture = this.activeItem.furniture;
-      furniture.x = x;
-      furniture.y = y;
-      furniture.render(screen);
+      const furniture = this.activeItem.furniture
+      furniture.x = x
+      furniture.y = y
+      furniture.render(screen)
     }
-  },
-
-  touchItem: function(itemEntity) {
-    itemEntity.take(this);
-    this.inventory.add(itemEntity.item);
-  },
-
-  canSwim: function() {
-    return true;
-  },
-
-  findStartPos: function(level) {
-    while (true) {
-      var x = random.nextInt(level.w);
-      var y = random.nextInt(level.h);
-      if (level.getTile(x, y) == Tile.grass) {
-        this.x = x * 16 + 8;
-        this.y = y * 16 + 8;
-        return true;
-      }
-    }
-  },
-
-  payStamina: function(cost) {
-    if (cost > this.stamina) return false;
-    this.stamina -= cost;
-    return true;
-  },
-
-  changeLevel: function(dir) {
-    this.game.scheduleLevelChange(dir);
-  },
-
-  getLightRadius: function() {
-    var r = 2;
-    if (this.activeItem != null) {
-      if (this.activeItem instanceof FurnitureItem) {
-        var rr = this.activeItem.furniture.getLightRadius();
-        if (rr > r) r = rr;
-      }
-    }
-    return r;
-  },
-
-  die: function() {
-    Player.Super.die.call(this);
-    Sound.playerDeath.play();
-  },
-
-  touchedBy: function(entity) {
-    if (!(entity instanceof Player)) {
-      entity.touchedBy(this);
-    }
-  },
-
-  doHurt: function(damage, attackDir) {
-    if (this.hurtTime > 0 || this.invulnerableTime > 0) return;
-
-    Sound.playerHurt.play();
-    this.level.add(new TextParticle("" + damage, this.x, this.style, Color.get(asHSL-1, 504, 504, 504)));
-    this.health -= damage;
-    if (this.attackDir == 0) this.yKnockback = +6;
-    if (this.attackDir == 1) this.yKnockback = -6;
-    if (this.attackDir == 2) this.xKnockback = -6;
-    if (this.attackDir == 3) this.xKnockback = +6;
-    this.hurtTime = 10;
-    this.invulnerableTime = 30;
-  },
-
-  gameWon: function() {
-    this.level.player.invulnerableTime = 60 * 5;
-    this.game.won();
   }
 
-});
+  touchItem(itemEntity) {
+    itemEntity.take(this)
+    this.inventory.add(itemEntity.item)
+  }
+
+  canSwim() {
+    return true
+  }
+
+  findStartPos(level) {
+    while (true) {
+      const x = random.nextInt(level.w)
+      const y = random.nextInt(level.h)
+      if (level.getTile(x, y) == Tile.grass) {
+        this.x = x * 16 + 8
+        this.y = y * 16 + 8
+        return true
+      }
+    }
+  }
+
+  payStamina(cost) {
+    if (cost > this.stamina) return false
+    this.stamina -= cost
+    return true
+  }
+
+  changeLevel(dir) {
+    this.game.scheduleLevelChange(dir)
+  }
+
+  getLightRadius() {
+    let r = 2
+    if (this.activeItem != null) {
+      if (this.activeItem instanceof FurnitureItem) {
+        const rr = this.activeItem.furniture.getLightRadius()
+        if (rr > r) r = rr
+      }
+    }
+    return r
+  }
+
+  die() {
+    super.die()
+    Sound.playerDeath.play()
+  }
+
+  touchedBy(entity) {
+    if (!(entity instanceof Player)) {
+      entity.touchedBy(this)
+    }
+  }
+
+  doHurt(damage, attackDir) {
+    if (this.hurtTime > 0 || this.invulnerableTime > 0) return
+
+    Sound.playerHurt.play()
+    this.level.add(new TextParticle(`${damage}`, this.x, this.style, Color.get(asHSL-1, 504, 504, 504)))
+    this.health -= damage
+    if (this.attackDir == 0) this.yKnockback = +6
+    if (this.attackDir == 1) this.yKnockback = -6
+    if (this.attackDir == 2) this.xKnockback = -6
+    if (this.attackDir == 3) this.xKnockback = +6
+    this.hurtTime = 10
+    this.invulnerableTime = 30
+  }
+
+  gameWon() {
+    this.level.player.invulnerableTime = 60 * 5
+    this.game.won()
+  }
+}
 
 
 

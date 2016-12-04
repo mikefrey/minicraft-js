@@ -8,75 +8,85 @@
 // import com.mojang.ld22.level.Level;
 // import com.mojang.ld22.level.tile.Tile;
 
-function Entity() {
-  this.x = null;
-  this.y = null;
-  this.xr = 6;
-  this.yr = 6;
-  this.removed = false;
-  this.level = null;
-}
+class Entity {
+  constructor() {
+    this.x = null;
+    this.y = null;
+    this.xr = 6;
+    this.yr = 6;
+    this.removed = false;
+    this.level = null;
+  }
 
-Entity.prototype = {
+  render(screen) {}
+  tick() {}
 
-  render: function(screen) {},
+  remove() {
+    this.removed = true;
+  }
 
-  tick: function() {},
-
-  remove: function() {
-    removed = true;
-  },
-
-  init: function(level) {
+  init(level) {
     this.uid = Entity.uid();
     this.level = level;
-  },
+  }
 
-  intersects: function(x0, y0, x1, y1) {
-    var x = this.x, y = this.y, xr = this.xr, yr = this.yr;
+  intersects(x0, y0, x1, y1) {
+    const x = this.x;
+    const y = this.y;
+    const xr = this.xr;
+    const yr = this.yr;
     return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
-  },
+  }
 
-  blocks: function(/* Entity */ e) {
+  blocks(/* Entity */ e) {
     return false;
-  },
+  }
 
-  hurt: function(thing, a, b, c) {
+  hurt(thing, a, b, c) {
     if (thing instanceof Mob) return this.hurtMob(thing, a, b)
     if (thing instanceof Tile) return this.hurtTile(thing, a, b, c)
-  },
-  hurtMob: function(mob, dmg, attackDir) { },
-  hurtTile: function(tile, x, y, dmg) { },
+  }
 
-  move: function(xa, ya) {
+  hurtMob(mob, dmg, attackDir) { }
+  hurtTile(tile, x, y, dmg) { }
+
+  move(xa, ya) {
     if (xa != 0 || ya != 0) {
-      var stopped = true;
+      let stopped = true;
       if (xa != 0 && this.move2(xa, 0)) stopped = false;
       if (ya != 0 && this.move2(0, ya)) stopped = false;
       if (!stopped) {
-        var xt = this.x >> 4;
-        var yt = this.y >> 4;
+        const xt = this.x >> 4;
+        const yt = this.y >> 4;
         this.level.getTile(xt, yt).steppedOn(this.level, xt, yt, this);
       }
       return !stopped;
     }
     return true;
-  },
+  }
 
-  move2: function(xa, ya) {
-    var x = this.x, y = this.y, xr = this.xr, yr = this.yr;
+  move2(xa, ya) {
+    const x = this.x;
+    const y = this.y;
+    const xr = this.xr;
+    const yr = this.yr;
     if (xa != 0 && ya != 0) throw "Move2 can only move along one axis at a time!";
 
-    var xto0 = ((x) - xr) >> 4,
-        yto0 = ((y) - yr) >> 4,
-        xto1 = ((x) + xr) >> 4,
-        yto1 = ((y) + yr) >> 4,
-        xt0 = ((x + xa) - xr) >> 4,
-        yt0 = ((y + ya) - yr) >> 4,
-        xt1 = ((x + xa) + xr) >> 4,
-        yt1 = ((y + ya) + yr) >> 4,
-        blocked = false,
-        yt, xt, i, e, wasInside, isInside;
+    const xto0 = ((x) - xr) >> 4;
+    const yto0 = ((y) - yr) >> 4;
+    const xto1 = ((x) + xr) >> 4;
+    const yto1 = ((y) + yr) >> 4;
+    const xt0 = ((x + xa) - xr) >> 4;
+    const yt0 = ((y + ya) - yr) >> 4;
+    const xt1 = ((x + xa) + xr) >> 4;
+    const yt1 = ((y + ya) + yr) >> 4;
+    let blocked = false;
+    let yt;
+    let xt;
+    let i;
+    let e;
+    let wasInside;
+    let isInside;
 
     for (yt = yt0; yt <= yt1; yt++)
       for (xt = xt0; xt <= xt1; xt++) {
@@ -110,42 +120,41 @@ Entity.prototype = {
     this.x += xa;
     this.y += ya;
     return true;
-  },
+  }
 
-  touchedBy: function(entity) { },
+  touchedBy(entity) { }
 
-  isBlockable: function(mob) {
-    return true;
-  },
-
-  touchItem: function(itemEntity) { },
-
-  canSwim: function() {
-    return false;
-  },
-
-  interact: function(player, item, attackDir) {
-    return item.interact(player, this, attackDir);
-  },
-
-  use: function(player, attackDir) {
-    return false;
-  },
-
-  getLightRadius: function() {
-    return 0;
-  },
-
-  isBlockableBy: function(mob) {
+  isBlockable(mob) {
     return true;
   }
 
-};
+  touchItem(itemEntity) { }
 
+  canSwim() {
+    return false;
+  }
 
-Entity.uid = function() {
-  return Entity.nextUid++;
+  interact(player, item, attackDir) {
+    return item.interact(player, this, attackDir);
+  }
+
+  use(player, attackDir) {
+    return false;
+  }
+
+  getLightRadius() {
+    return 0;
+  }
+
+  isBlockableBy(mob) {
+    return true;
+  }
+
+  static uid() {
+    return Entity.nextUid++;
+  }
 }
+
 Entity.nextUid = 0;
 
 

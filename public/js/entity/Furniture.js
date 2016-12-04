@@ -5,22 +5,23 @@
 // import com.mojang.ld22.item.PowerGloveItem;
 
 
-function Furniture(name) {
-  this.name = name;
-  this.xr = 3;
-  this.yr = 3;
+class Furniture extends Entity {
+  constructor(name) {
+    super()
+    this.name = name;
+    this.xr = 3;
+    this.yr = 3;
 
-  this.pushTime = 0;
-  this.pushDir = -1;
-  this.col = 0;
-  this.sprite = 0;
-  this.shouldTake = null; /* Player */
-}
+    this.pushTime = 0;
+    this.pushDir = -1;
+    this.col = 0;
+    this.sprite = 0;
+    this.shouldTake = null; /* Player */
+  }
 
-Furniture.Super = Entity.prototype;
-Furniture.prototype = extend(new Entity(), {
-
-  tick: function() {
+  // Furniture.Super = Entity.prototype;
+  // Furniture.prototype = extend(new Entity(), {
+  tick() {
     if (this.shouldTake != null) {
       if (this.shouldTake.activeItem instanceof PowerGloveItem) {
         this.remove();
@@ -35,31 +36,30 @@ Furniture.prototype = extend(new Entity(), {
     if (this.pushDir == 3) this.move(+1, 0);
     this.pushDir = -1;
     if (this.pushTime > 0) this.pushTime--;
-  },
+  }
 
-  render: function(screen) {
+  render(screen) {
     screen.render(this.x - 8, this.y - 8 - 4, this.sprite * 2 + 8 * 32, this.col, 0);
     screen.render(this.x - 0, this.y - 8 - 4, this.sprite * 2 + 8 * 32 + 1, this.col, 0);
     screen.render(this.x - 8, this.y - 0 - 4, this.sprite * 2 + 8 * 32 + 32, this.col, 0);
     screen.render(this.x - 0, this.y - 0 - 4, this.sprite * 2 + 8 * 32 + 33, this.col, 0);
-  },
+  }
 
-  blocks: function(e) {
+  blocks(e) {
     return true;
-  },
+  }
 
-  touchedBy: function(entity) {
+  touchedBy(entity) {
     if (entity instanceof Player && this.pushTime == 0) {
       this.pushDir = entity.dir;
       this.pushTime = 10;
     }
-  },
-
-  take: function(player) {
-    this.shouldTake = player;
   }
 
-});
+  take(player) {
+    this.shouldTake = player;
+  }
+}
 
 
 // public class Furniture extends Entity {

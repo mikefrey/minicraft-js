@@ -4,22 +4,20 @@
 // import com.mojang.ld22.gfx.Color;
 // import com.mojang.ld22.screen.CraftingMenu;
 
-function Anvil() {
-  this.col = Color.get(-1, 0, 111, 222);
-  this.sprite = 0;
-  this.xr = 3;
-  this.yr = 2;
-}
+class Anvil extends Furniture {
+  constructor() {
+    super('Anvil')
+    this.col = Color.get(-1, 0, 111, 222);
+    this.sprite = 0;
+    this.xr = 3;
+    this.yr = 2;
+  }
 
-Anvil.Super = Furniture.prototype;
-Anvil.prototype = extend(new Furniture("Anvil"), {
-
-  use: function(player, attackDir) {
+  use(player, attackDir) {
     player.game.setMenu(new CraftingMenu(Crafting.anvilRecipes, player));
     return true;
   }
-
-});
+}
 
 
 // public class Anvil extends Furniture {

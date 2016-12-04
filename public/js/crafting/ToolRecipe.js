@@ -4,20 +4,17 @@
 // import com.mojang.ld22.item.ToolItem;
 // import com.mojang.ld22.item.ToolType;
 
-function ToolRecipe(type, level) {
-  this.init(new ToolItem(type, level));
-  this.type = type;
-  this.level = level;
-}
-
-ToolRecipe.Super = Recipe.prototype;
-ToolRecipe.prototype = extend(new Recipe(), {
-
-  craft: function(player) {
-    player.inventory.add(0, new ToolItem(type, level));
+class ToolRecipe extends Recipe {
+  constructor(type, level) {
+    super(new ToolItem(type, level))
+    this.type = type
+    this.level = level
   }
 
-});
+  craft(player) {
+    player.inventory.add(0, new ToolItem(type, level))
+  }
+}
 
 
 

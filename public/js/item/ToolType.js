@@ -1,12 +1,12 @@
 // package com.mojang.ld22.item;
 
-ToolType = {
+const ToolType = {
   shovel  : { name: 'Shvl', sprite: 0 },
   hoe     : { name: 'Hoe',  sprite: 1 },
   sword   : { name: 'Swrd', sprite: 2 },
   pickaxe : { name: 'Pick', sprite: 3 },
   axe     : { name: 'Axe',  sprite: 4 }
-};
+}
 
 
 // public class ToolType {

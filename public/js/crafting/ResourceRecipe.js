@@ -7,19 +7,16 @@
 // import com.mojang.ld22.item.ResourceItem;
 // import com.mojang.ld22.item.resource.Resource;
 
-function ResourceRecipe(resource) {
-  this.resource = resource;
-  this.init(resource);
-}
-
-ResourceRecipe.Super = Recipe.prototype;
-ResourceRecipe.prototype = extend(new Recipe(), {
-
-  craft: function(player) {
-    player.inventory.add(0, new ResourceItem(this.resource, 1));
+class ResourceRecipe extends Recipe {
+  constructor(resource) {
+    super(new ResourceItem(resource, 1))
+    this.resource = resource
   }
 
-});
+  craft(player) {
+    player.inventory.add(0, new ResourceItem(this.resource, 1))
+  }
+}
 
 
 // public class ResourceRecipe extends Recipe {

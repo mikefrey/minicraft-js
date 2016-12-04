@@ -37,13 +37,16 @@ Screen.prototype = {
 		for (var y = 0; y < 8; y++) {
 			var ys = y;
 			if (mirrorY) ys = 7 - y;
+			// don't draw off the top/bottom of screen
 			if (y + yp < 0 || y + yp >= this.h) continue;
 			for (var x = 0; x < 8; x++) {
+				// don't draw of left/right of screen
 				if (x + xp < 0 || x + xp >= this.w) continue;
 
 				var xs = x;
 				if (mirrorX) xs = 7 - x;
-				var col = (colors >> (this.sheet.pixels.data[xs + ys * this.sheet.width + toffs] * 8)) & 255;
+				var col = (colors >> (this.sheet.pixels.data[(xs + ys * this.sheet.width + toffs)*4] * 8)) & 255;
+				// var col = this.sheet.pixels.data[(xs + ys * this.sheet.width + toffs)*4]
 				if (col < 255) this.pixels[(x + xp) + (y + yp) * this.w] = col;
 			}
 		}

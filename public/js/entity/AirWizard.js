@@ -6,160 +6,161 @@
 // import com.mojang.ld22.item.resource.Resource;
 // import com.mojang.ld22.sound.Sound;
 
-function AirWizard() {
-  this.x = random.nextInt(64 * 16);
-  this.y = random.nextInt(64 * 16);
-  this.health = this.maxHealth = 2000;
+class AirWizard extends Mob {
+  constructor() {
+    super()
+    this.x = random.nextInt(64 * 16)
+    this.y = random.nextInt(64 * 16)
+    this.health = this.maxHealth = 2000
 
-  this.xa = 0;
-  this.ya = 0;
-  this.randomWalkTime = 0;
-  this.attackDelay = 0;
-  this.attackTime = 0;
-  this.attackType = 0;
-}
+    this.xa = 0
+    this.ya = 0
+    this.randomWalkTime = 0
+    this.attackDelay = 0
+    this.attackTime = 0
+    this.attackType = 0
+  }
 
-AirWizard.Super = Mob.prototype;
-AirWizard.prototype = extend(new Mob(), {
+  tick() {
+    super.tick()
 
-  tick: function() {
-    AirWizard.Super.tick.call();
-
-    var speed, dir, xd, yd;
+    let speed
+    let dir
+    let xd
+    let yd
 
     if (this.attackDelay > 0) {
-      this.dir = (this.attackDelay - 45) / 4 % 4 | 0;
-      this.dir = (this.dir * 2 % 4) + (this.dir / 2) | 0;
+      this.dir = (this.attackDelay - 45) / 4 % 4 | 0
+      this.dir = (this.dir * 2 % 4) + (this.dir / 2) | 0
       if (this.attackDelay < 45) {
-        this.dir = 0;
+        this.dir = 0
       }
-      this.attackDelay--;
+      this.attackDelay--
       if (this.attackDelay == 0) {
-        this.attackType = 0;
-        if (this.health < 1000) this.attackType = 1;
-        if (this.health < 200) this.attackType = 2;
-        this.attackTime = 60 * 2;
+        this.attackType = 0
+        if (this.health < 1000) this.attackType = 1
+        if (this.health < 200) this.attackType = 2
+        this.attackTime = 60 * 2
       }
-      return;
+      return
     }
 
     if (this.attackTime > 0) {
-      this.attackTime--;
-      dir = this.attackTime * 0.25 * (this.attackTime % 2 * 2 - 1);
-      speed = (0.7) + attackType * 0.2;
-      this.level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed));
-      return;
+      this.attackTime--
+      dir = this.attackTime * 0.25 * (this.attackTime % 2 * 2 - 1)
+      speed = (0.7) + attackType * 0.2
+      this.level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed))
+      return
     }
 
     if (this.level.player != null && this.randomWalkTime == 0) {
-      xd = this.level.player.x - this.x;
-      yd = this.level.player.y - this.y;
+      xd = this.level.player.x - this.x
+      yd = this.level.player.y - this.y
       if (xd * xd + yd * yd < 32 * 32) {
-        this.xa = 0;
-        this.ya = 0;
-        if (xd < 0) this.xa = +1;
-        if (xd > 0) this.xa = -1;
-        if (yd < 0) this.ya = +1;
-        if (yd > 0) this.ya = -1;
+        this.xa = 0
+        this.ya = 0
+        if (xd < 0) this.xa = +1
+        if (xd > 0) this.xa = -1
+        if (yd < 0) this.ya = +1
+        if (yd > 0) this.ya = -1
       } else if (xd * xd + yd * yd > 80 * 80) {
-        this.xa = 0;
-        this.ya = 0;
-        if (xd < 0) this.xa = -1;
-        if (xd > 0) this.xa = +1;
-        if (yd < 0) this.ya = -1;
-        if (yd > 0) this.ya = +1;
+        this.xa = 0
+        this.ya = 0
+        if (xd < 0) this.xa = -1
+        if (xd > 0) this.xa = +1
+        if (yd < 0) this.ya = -1
+        if (yd > 0) this.ya = +1
       }
     }
 
-    speed = (this.tickTime % 4) == 0 ? 0 : 1;
+    speed = (this.tickTime % 4) == 0 ? 0 : 1
     if (!this.move(this.xa * speed, this.ya * speed) || random.nextInt(100) == 0) {
-      this.randomWalkTime = 30;
-      this.xa = (random.nextInt(3) - 1);
-      this.ya = (random.nextInt(3) - 1);
+      this.randomWalkTime = 30
+      this.xa = (random.nextInt(3) - 1)
+      this.ya = (random.nextInt(3) - 1)
     }
     if (this.randomWalkTime > 0) {
-      this.randomWalkTime--;
+      this.randomWalkTime--
       if (this.level.player != null && this.randomWalkTime == 0) {
-        xd = this.level.player.x - this.x;
-        yd = this.level.player.y - this.y;
+        xd = this.level.player.x - this.x
+        yd = this.level.player.y - this.y
         if (random.nextInt(4) == 0 && xd * xd + yd + yd < 50 * 50) {
           if (this.attackDelay == 0 && this.attackTime == 0) {
-            this.attackDelay = 60 * 2;
+            this.attackDelay = 60 * 2
           }
         }
       }
     }
-  },
+  }
 
-  doHurt: function(damage, attackDir) {
-    AirWizard.Super.doHurt(damage, attackDir);
+  doHurt(damage, attackDir) {
+    super.doHurt(damage, attackDir)
     if (this.attackDelay == 0 && this.attackTime == 0) {
-      this.attackDelay = 60 * 2;
+      this.attackDelay = 60 * 2
     }
-  },
+  }
 
-  render: function(screen) {
-    var xt = 8;
-    var yt = 14;
+  render(screen) {
+    let xt = 8
+    const yt = 14
 
-    var flip1 = (this.walkDist >> 3) & 1;
-    var flip2 = (this.walkDist >> 3) & 1;
+    let flip1 = (this.walkDist >> 3) & 1
+    let flip2 = (this.walkDist >> 3) & 1
 
     if (this.dir == 1) {
-      xt += 2;
+      xt += 2
     }
     if (this.dir > 1) {
-      flip1 = 0;
-      flip2 = (this.walkDist >> 4) & 1;
+      flip1 = 0
+      flip2 = (this.walkDist >> 4) & 1
       if (this.dir == 2) {
-        flip1 = 1;
+        flip1 = 1
       }
-      xt += 4 + ((this.walkDist >> 3) & 1) * 2;
+      xt += 4 + ((this.walkDist >> 3) & 1) * 2
     }
 
-    var xo = this.x - 8;
-    var yo = this.y - 11;
+    const xo = this.x - 8
+    const yo = this.y - 11
 
-    var col1 = Color.get(-1, 100, 500, 555);
-    var col2 = Color.get(-1, 100, 500, 532);
+    let col1 = Color.get(-1, 100, 500, 555)
+    let col2 = Color.get(-1, 100, 500, 532)
     if (this.health < 200) {
       if (this.tickTime / 3 % 2 | 0 == 0) {
-        col1 = Color.get(-1, 500, 100, 555);
-        col2 = Color.get(-1, 500, 100, 532);
+        col1 = Color.get(-1, 500, 100, 555)
+        col2 = Color.get(-1, 500, 100, 532)
       }
     } else if (this.health < 1000) {
       if ((this.tickTime / 5 % 4 | 0) == 0) {
-        col1 = Color.get(-1, 500, 100, 555);
-        col2 = Color.get(-1, 500, 100, 532);
+        col1 = Color.get(-1, 500, 100, 555)
+        col2 = Color.get(-1, 500, 100, 532)
       }
     }
     if (this.hurtTime > 0) {
-      col1 = Color.get(-1, 555, 555, 555);
-      col2 = Color.get(-1, 555, 555, 555);
+      col1 = Color.get(-1, 555, 555, 555)
+      col2 = Color.get(-1, 555, 555, 555)
     }
 
-    screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col1, flip1);
-    screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col1, flip1);
-    screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col2, flip2);
-    screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col2, flip2);
-  },
-
-  touchedBy: function(entity) {
-    if (entity instanceof Player) {
-      entity.hurt(this, 3, this.dir);
-    }
-  },
-
-  dir: function() {
-    AirWizard.Super.die.call(this);
-    if (this.level.player != null) {
-      this.level.player.score += 1000;
-      this.level.player.gameWon();
-    }
-    Sound.bossdeath.play();
+    screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col1, flip1)
+    screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col1, flip1)
+    screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col2, flip2)
+    screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col2, flip2)
   }
 
-});
+  touchedBy(entity) {
+    if (entity instanceof Player) {
+      entity.hurt(this, 3, this.dir)
+    }
+  }
+
+  dir() {
+    super.die()
+    if (this.level.player != null) {
+      this.level.player.score += 1000
+      this.level.player.gameWon()
+    }
+    Sound.bossdeath.play()
+  }
+}
 
 
 

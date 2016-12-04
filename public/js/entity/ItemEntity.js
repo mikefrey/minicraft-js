@@ -5,86 +5,85 @@
 // import com.mojang.ld22.item.Item;
 // import com.mojang.ld22.sound.Sound;
 
-function ItemEntity(item, x, y) {
-  this.item = item;
-  this.xx = this.x = x;
-  this.yy = this.y = y;
-  this.xr = 3;
-  this.xy = 3;
+class ItemEntity extends Entity {
+  constructor(item, x, y) {
+    super()
+    this.item = item
+    this.xx = this.x = x
+    this.yy = this.y = y
+    this.xr = 3
+    this.xy = 3
 
-  this.zz = 2;
-  this.xa = random.nextGaussian() * 0.3;
-  this.ya = random.nextGaussian() * 0.2;
-  this.za = random.nextFloat() * 0.7 + 1;
+    this.zz = 2
+    this.xa = random.nextGaussian() * 0.3
+    this.ya = random.nextGaussian() * 0.2
+    this.za = random.nextFloat() * 0.7 + 1
 
-  this.lifeTime = 60 * 10 + random.nextInt(60);
+    this.lifeTime = 60 * 10 + random.nextInt(60)
 
-  this.walkDist = 0;
-  this.dir = 0;
-  this.hurtTime = 0;
-  this.xKnockback = 0;
-  this.yKnockback = 0;
-  this.time = 0;
-}
-
-ItemEntity.Super = Entity.prototype;
-ItemEntity.prototype = extend(new Entity(), {
-
-  tick: function() {
-    this.time++;
-    if (this.time >= this.lifeTime) {
-      this.remove();
-      return;
-    }
-    this.xx += this.xa;
-    this.yy += this.ya;
-    this.zz += this.za;
-    if (this.zz < 0) {
-      this.zz = 0;
-      this.za *= -0.5;
-      this.xa *= 0.6;
-      this.ya *= 0.6;
-    }
-    this.za -= 0.15;
-    var ox = this.x;
-    var oy = this.y;
-    var nx = Math.round(this.xx);
-    var ny = Math.round(this.yy);
-    var expectedx = nx - this.x;
-    var expectedy = ny - this.y;
-    this.move(nx - this.x, ny - this.y);
-    var gotx = this.x - ox;
-    var goty = this.y - oy;
-    this.xx += gotx - expectedx;
-    this.yy += goty - expectedy;
-
-    if (this.hurtTime > 0) this.hurtTime--;
-  },
-
-  isBlockableBy: function(mob) {
-    return false;
-  },
-
-  render: function(screen) {
-    if (this.time >= this.lifeTime - 6 * 20) {
-      if ((this.time / 6 % 2 | 0) == 0) return;
-    }
-    screen.render(this.x - 4, this.y - 4, this.item.getSprite(), Color.get(-1, 0, 0, 0), 0);
-    screen.render(this.x - 4, this.y - 4 - Math.round(this.zz), this.item.getSprite(), this.item.getColor(), 0);
-  },
-
-  touchedBy: function(entity) {
-    if (this.time > 30) entity.touchItem(this);
-  },
-
-  take: function(player) {
-    Sound.pickup.play();
-    player.score++;
-    this.item.onTake(this);
-    this.remove();
+    this.walkDist = 0
+    this.dir = 0
+    this.hurtTime = 0
+    this.xKnockback = 0
+    this.yKnockback = 0
+    this.time = 0
   }
 
-});
+  tick() {
+    this.time++
+    if (this.time >= this.lifeTime) {
+      this.remove()
+      return
+    }
+    this.xx += this.xa
+    this.yy += this.ya
+    this.zz += this.za
+    if (this.zz < 0) {
+      this.zz = 0
+      this.za *= -0.5
+      this.xa *= 0.6
+      this.ya *= 0.6
+    }
+    this.za -= 0.15
+    const ox = this.x
+    const oy = this.y
+    const nx = Math.round(this.xx)
+    const ny = Math.round(this.yy)
+    const expectedx = nx - this.x
+    const expectedy = ny - this.y
+    this.move(nx - this.x, ny - this.y)
+    const gotx = this.x - ox
+    const goty = this.y - oy
+    this.xx += gotx - expectedx
+    this.yy += goty - expectedy
+
+    if (this.hurtTime > 0) this.hurtTime--
+  }
+
+  isBlockableBy(mob) {
+    return false
+  }
+
+  render(screen) {
+    if (this.time >= this.lifeTime - 6 * 20) {
+      if ((this.time / 6 % 2 | 0) == 0) return
+    }
+    screen.render(this.x - 4, this.y - 4, this.item.getSprite(), Color.get(-1, 0, 0, 0), 0)
+    screen.render(this.x - 4, this.y - 4 - Math.round(this.zz), this.item.getSprite(), this.item.getColor(), 0)
+  }
+
+  touchedBy(entity) {
+    if (this.time > 30) entity.touchItem(this)
+  }
+
+  take(player) {
+    Sound.pickup.play()
+    player.score++
+    this.item.onTake(this)
+    this.remove()
+  }
+}
+
 
 
 

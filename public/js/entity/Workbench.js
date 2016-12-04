@@ -4,20 +4,20 @@
 // import com.mojang.ld22.gfx.Color;
 // import com.mojang.ld22.screen.CraftingMenu;
 
-function Workbench() {
-  this.col = Color.get(-1, 100, 321, 431);
-  this.sprite = 4;
-  this.xr = 3;
-  this.yr = 2;
+class Workbench extends Furniture {
+  constructor() {
+    super('Workbench')
+    this.col = Color.get(-1, 100, 321, 431)
+    this.sprite = 4
+    this.xr = 3
+    this.yr = 2
+  }
+
+  use(player, attackDir) {
+    player.game.setMenu(new CraftingMenu(Crafting.workbenchRecipes, player))
+    return true
+  }
 }
-
-Workbench.prototype = new Furniture("Workbench");
-Workbench.Super = Furniture.prototype;
-
-Workbench.prototype.use = function(player, attackDir) {
-  player.game.setMenu(new CraftingMenu(Crafting.workbenchRecipes, player));
-  return true;
-};
 
 
 // public class Workbench extends Furniture {

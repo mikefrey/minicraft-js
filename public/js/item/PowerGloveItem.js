@@ -7,44 +7,37 @@
 // import com.mojang.ld22.gfx.Font;
 // import com.mojang.ld22.gfx.Screen;
 
+class PowerGloveItem extends Item {
 
-function PowerGloveItem() {
-
-}
-
-PowerGloveItem.Super = Item.prototype;
-PowerGloveItem.prototype = extend(new Item(), {
-
-  getColor: function() {
-    return Color.get(-1, 100, 320, 430);
-  },
-
-  getSprite: function() {
-    return 7 + 4 * 32;
-  },
-
-  renderIcon: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-  },
-
-  renderInventory: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-    Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555));
-  },
-
-  getName: function() {
-    return "Pow glove";
-  },
-
-  interact: function(player, entity, attackDir) {
-    if (entity instanceof Furniture) {
-      entity.take(player);
-      return true;
-    }
-    return false;
+  getColor() {
+    return Color.get(-1, 100, 320, 430)
   }
 
-});
+  getSprite() {
+    return 7 + 4 * 32
+  }
+
+  renderIcon(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+  }
+
+  renderInventory(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+    Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555))
+  }
+
+  getName() {
+    return "Pow glove"
+  }
+
+  interact(player, entity, attackDir) {
+    if (entity instanceof Furniture) {
+      entity.take(player)
+      return true
+    }
+    return false
+  }
+}
 
 
 

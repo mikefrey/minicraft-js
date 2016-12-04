@@ -5,101 +5,100 @@
 // import com.mojang.ld22.item.ResourceItem;
 // import com.mojang.ld22.item.resource.Resource;
 
-function Zombie(lvl) {
-  this.lvl = lvl;
-  this.x = random.nextInt(64 * 16);
-  this.y = random.nextInt(64 * 16);
-  this.health = this.maxHealth = lvl * lvl * 10;
+class Zombie extends Mob {
+  constructor(lvl) {
+    super()
+    this.lvl = lvl
+    this.x = random.nextInt(64 * 16)
+    this.y = random.nextInt(64 * 16)
+    this.health = this.maxHealth = lvl * lvl * 10
 
-  this.xa = 0;
-  this.ya = 0;
-  this.randomWalkTime = 0;
-}
+    this.xa = 0
+    this.ya = 0
+    this.randomWalkTime = 0
+  }
 
-Zombie.Super = Mob.prototype;
-Zombie.prototype = extend(new Mob(), {
-
-  tick: function() {
-    Zombie.Super.tick.call(this);
+  tick() {
+    super.tick()
 
     if (this.level.player != null && this.randomWalkTime == 0) {
-      var xd = this.level.player.x - this.x;
-      var yd = this.level.player.y - this.y;
+      const xd = this.level.player.x - this.x
+      const yd = this.level.player.y - this.y
       if (xd * xd + yd * yd < 50 * 50) {
-        this.xa = 0;
-        this.ya = 0;
-        if (xd < 0) xa = -1;
-        if (xd > 0) xa = +1;
-        if (yd < 0) ya = -1;
-        if (yd > 0) ya = +1;
+        this.xa = 0
+        this.ya = 0
+        if (xd < 0) this.xa = -1
+        if (xd > 0) this.xa = +1
+        if (yd < 0) this.ya = -1
+        if (yd > 0) this.ya = +1
       }
     }
 
-    var speed = this.tickTime & 1;
+    const speed = this.tickTime & 1
     if (!this.move(this.xa * speed, this.ya * speed) || random.nextInt(200) == 0) {
-      this.randomWalkTime = 60;
-      this.xa = (random.nextInt(3) - 1) * random.nextInt(2);
-      this.ya = (random.nextInt(3) - 1) * random.nextInt(2);
+      this.randomWalkTime = 60
+      this.xa = (random.nextInt(3) - 1) * random.nextInt(2)
+      this.ya = (random.nextInt(3) - 1) * random.nextInt(2)
     }
-    if (this.randomWalkTime > 0) this.randomWalkTime--;
-  },
+    if (this.randomWalkTime > 0) this.randomWalkTime--
+  }
 
-  render: function(screen) {
-    var xt = 0;
-    var yt = 14;
+  render(screen) {
+    let xt = 0
+    const yt = 14
 
-    var flip1 = (this.walkDist >> 3) & 1;
-    var flip2 = (this.walkDist >> 3) & 1;
+    let flip1 = (this.walkDist >> 3) & 1
+    let flip2 = (this.walkDist >> 3) & 1
 
     if (this.dir == 1) {
-      xt += 2;
+      xt += 2
     }
     if (this.dir > 1) {
-      flip1 = 0;
-      flip2 = ((this.walkDist >> 4) & 1);
+      flip1 = 0
+      flip2 = ((this.walkDist >> 4) & 1)
       if (this.dir == 2) {
-        flip1 = 1;
+        flip1 = 1
       }
-      xt += 4 + ((this.walkDist >> 3) & 1) * 2;
+      xt += 4 + ((this.walkDist >> 3) & 1) * 2
     }
 
-    var xo = this.x - 8;
-    var yo = this.y - 11;
+    const xo = this.x - 8
+    const yo = this.y - 11
 
-    var col = Color.get(-1, 10, 252, 50);
-    if (this.lvl == 2) col = Color.get(-1, 100, 522, 50);
-    if (this.lvl == 3) col = Color.get(-1, 111, 444, 50);
-    if (this.lvl == 4) col = Color.get(-1, 0, 111, 20);
+    let col = Color.get(-1, 10, 252, 50)
+    if (this.lvl == 2) col = Color.get(-1, 100, 522, 50)
+    if (this.lvl == 3) col = Color.get(-1, 111, 444, 50)
+    if (this.lvl == 4) col = Color.get(-1, 0, 111, 20)
     if (this.hurtTime > 0) {
-      col = Color.get(-1, 555, 555, 555);
+      col = Color.get(-1, 555, 555, 555)
     }
 
-    screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col, flip1);
-    screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col, flip1);
-    screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col, flip2);
-    screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col, flip2);
-  },
+    screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col, flip1)
+    screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col, flip1)
+    screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col, flip2)
+    screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col, flip2)
+  }
 
-  touchedBy: function(entity) {
+  touchedBy(entity) {
     if (entity instanceof Player) {
-      entity.hurt(this, this.lvl + 1, this.dir);
-    }
-  },
-
-  die: function() {
-    Zombie.Super.die.call(this);
-
-    var count = random.nextInt(2) + 1;
-    for (var i = 0; i < count; i++) {
-      this.level.add(new ItemEntity(new ResourceItem(Resource.cloth), this.x + random.nextInt(11) - 5, this.y + random.nextInt(11) - 5));
-    }
-
-    if (this.level.player != null) {
-      this.level.player.score += 50 * this.lvl;
+      entity.hurt(this, this.lvl + 1, this.dir)
     }
   }
 
-});
+  die() {
+    super.die()
+
+    const count = random.nextInt(2) + 1
+    for (let i = 0; i < count; i++) {
+      this.level.add(new ItemEntity(new ResourceItem(Resource.cloth), this.x + random.nextInt(11) - 5, this.y + random.nextInt(11) - 5))
+    }
+
+    if (this.level.player != null) {
+      this.level.player.score += 50 * this.lvl
+    }
+  }
+}
+
 
 
 // public class Zombie extends Mob {

@@ -8,71 +8,71 @@
 // import com.mojang.ld22.gfx.Font;
 // import com.mojang.ld22.gfx.Screen;
 
-function ToolItem(type, level) {
-  this.type = type;
-  this.level = level;
+class ToolItem extends Item {
+  
+  constructor(type, level) {
+    super()
+    this.type = type
+    this.level = level
+  }
+
+  getColor() {
+    return ToolItem.LEVEL_COLORS[this.level]
+  }
+
+  getSprite() {
+    return this.type.sprite + 5 * 32
+  }
+
+  getName() {
+    return `${ToolItem.LEVEL_NAMES[this.level]} ${this.type.name}`
+  }
+
+  renderIcon(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+  }
+
+  renderInventory(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+    Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555))
+  }
+
+  onTake(itemEntity) { }
+
+  canAttack() {
+    return true
+  }
+
+  getAttackDamageBonus(e) {
+    if (this.type == ToolType.axe) {
+      return (this.level + 1) * 2 + random.nextInt(4)
+    }
+    if (this.type == ToolType.sword) {
+      return (this.level + 1) * 3 + random.nextInt(2 + this.level * this.level * 2)
+    }
+    return 1
+  }
+
+  matches(item) {
+    if (item instanceof ToolItem) {
+      if (item.type != this.type) return false
+      if (item.level != this.level) return false
+      return true
+    }
+    return false
+  }
 }
 
-ToolItem.MAX_LEVEL = 5;
-ToolItem.LEVEL_NAMES = [ 'Wood', 'Rock', 'Iron', 'Gold', 'Gem' ];
+ToolItem.MAX_LEVEL = 5
+ToolItem.LEVEL_NAMES = [ 'Wood', 'Rock', 'Iron', 'Gold', 'Gem' ]
 ToolItem.LEVEL_COLORS = [
   Color.get(-1, 100, 321, 431),
   Color.get(-1, 100, 321, 111),
   Color.get(-1, 100, 321, 555),
   Color.get(-1, 100, 321, 550),
   Color.get(-1, 100, 321, 55)
-];
+]
 
-ToolItem.Super = Item.prototype;
-ToolItem.prototype = extend(new Item(), {
-
-  getColor: function() {
-    return ToolItem.LEVEL_COLORS[this.level];
-  },
-
-  getSprite: function() {
-    return this.type.sprite + 5 * 32;
-  },
-
-  getName: function() {
-    return ToolItem.LEVEL_NAMES[this.level] + ' ' + this.type.name;
-  },
-
-  renderIcon: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-  },
-
-  renderInventory: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-    Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555));
-  },
-
-  onTake: function(itemEntity) { },
-
-  canAttack: function() {
-    return true;
-  },
-
-  getAttackDamageBonus: function(e) {
-    if (this.type == ToolType.axe) {
-      return (this.level + 1) * 2 + random.nextInt(4);
-    }
-    if (this.type == ToolType.sword) {
-      return (this.level + 1) * 3 + random.nextInt(2 + this.level * this.level * 2);
-    }
-    return 1;
-  },
-
-  matches: function(item) {
-    if (item instanceof ToolItem) {
-      if (item.type != this.type) return false;
-      if (item.level != this.level) return false;
-      return true;
-    }
-    return false;
-  }
-
-});
 
 
 // public class ToolItem extends Item {

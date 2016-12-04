@@ -6,96 +6,95 @@
 // import com.mojang.ld22.item.resource.Resource;
 
 
-function Slime(lvl) {
-  this.lvl = lvl;
-  this.x = random.nextInt(64 * 16);
-  this.y = random.nextInt(64 * 16);
-  this.health = this.maxHealth = lvl * lvl * 5;
+class Slime extends Mob {
+  constructor(lvl) {
+    super()
+    this.lvl = lvl
+    this.x = random.nextInt(64 * 16)
+    this.y = random.nextInt(64 * 16)
+    this.health = this.maxHealth = lvl * lvl * 5
 
-  this.xa = 0;
-  this.ya = 0;
-  this.jumpTime = 0;
-}
+    this.xa = 0
+    this.ya = 0
+    this.jumpTime = 0
+  }
 
-Slime.Super = Mob.prototype;
-Slime.prototype = extend(new Mob(), {
+  tick() {
+    super.tick()
 
-  tick: function() {
-    Slime.Super.tick.call(this);
-
-    var speed = 1;
+    const speed = 1
     if (!this.move(this.xa * speed, this.ya * speed) || random.nextInt(40) == 0) {
       if (this.jumpTime <= -10) {
-        this.xa = (random.nextInt(3) - 1);
-        this.ya = (random.nextInt(3) - 1);
+        this.xa = (random.nextInt(3) - 1)
+        this.ya = (random.nextInt(3) - 1)
 
         if (this.level.player != null) {
-          var xd = this.level.player.x - this.x;
-          var yd = this.level.player.y - this.y;
+          const xd = this.level.player.x - this.x
+          const yd = this.level.player.y - this.y
           if (xd * xd + yd * yd < 50 * 50) {
-            if (xd < 0) this.xa = -1;
-            if (xd > 0) this.xa = +1;
-            if (yd < 0) this.ya = -1;
-            if (yd > 0) this.ya = +1;
+            if (xd < 0) this.xa = -1
+            if (xd > 0) this.xa = +1
+            if (yd < 0) this.ya = -1
+            if (yd > 0) this.ya = +1
           }
         }
 
-        if (this.xa != 0 || this.ya != 0) this.jumpTime = 10;
+        if (this.xa != 0 || this.ya != 0) this.jumpTime = 10
       }
     }
 
-    this.jumpTime--;
+    this.jumpTime--
     if (this.jumpTime == 0) {
-      this.xa = this.ya = 0;
-    }
-  },
-
-  die: function() {
-    Slime.Super.die.call(this);
-
-    var count = random.nextInt(2) + 1;
-    for (var i = 0; i < this.count; i++) {
-      this.level.add(new ItemEntity(new ResourceItem(Resource.slime), this.x + random.nextInt(11) - 5, this.y + random.nextInt(11) - 5));
-    }
-
-    if (this.level.player != null) {
-      this.level.player.score += 25*this.lvl;
-    }
-  },
-
-  render: function(screen) {
-    var xt = 0;
-    var yt = 18;
-    var xo = this.x - 8;
-    var yo = this.y - 11;
-
-    if (this.jumpTime > 0) {
-      xt += 2;
-      yo -= 4;
-    }
-
-    var col = Color.get(-1, 10, 252, 555);
-    if (this.lvl == 2) col = Color.get(-1, 100, 522, 555);
-    if (this.lvl == 3) col = Color.get(-1, 111, 444, 555);
-    if (this.lvl == 4) col = Color.get(-1, 0, 111, 224);
-
-    if (this.hurtTime > 0) {
-      col = Color.get(-1, 555, 555, 555);
-    }
-
-    screen.render(xo + 0, yo + 0, xt + yt * 32, col, 0);
-    screen.render(xo + 8, yo + 0, xt + 1 + yt * 32, col, 0);
-    screen.render(xo + 0, yo + 8, xt + (yt + 1) * 32, col, 0);
-    screen.render(xo + 8, yo + 8, xt + 1 + (yt + 1) * 32, col, 0);
-  },
-
-  touchedBy: function(entity) {
-    if (entity instanceof Player) {
-      entity.hurt(this, this.lvl, this.dir);
+      this.xa = this.ya = 0
     }
   }
 
-});
+  die() {
+    super.die()
+
+    const count = random.nextInt(2) + 1
+    for (let i = 0; i < this.count; i++) {
+      this.level.add(new ItemEntity(new ResourceItem(Resource.slime), this.x + random.nextInt(11) - 5, this.y + random.nextInt(11) - 5))
+    }
+
+    if (this.level.player != null) {
+      this.level.player.score += 25*this.lvl
+    }
+  }
+
+  render(screen) {
+    let xt = 0
+    const yt = 18
+    const xo = this.x - 8
+    let yo = this.y - 11
+
+    if (this.jumpTime > 0) {
+      xt += 2
+      yo -= 4
+    }
+
+    let col = Color.get(-1, 10, 252, 555)
+    if (this.lvl == 2) col = Color.get(-1, 100, 522, 555)
+    if (this.lvl == 3) col = Color.get(-1, 111, 444, 555)
+    if (this.lvl == 4) col = Color.get(-1, 0, 111, 224)
+
+    if (this.hurtTime > 0) {
+      col = Color.get(-1, 555, 555, 555)
+    }
+
+    screen.render(xo + 0, yo + 0, xt + yt * 32, col, 0)
+    screen.render(xo + 8, yo + 0, xt + 1 + yt * 32, col, 0)
+    screen.render(xo + 0, yo + 8, xt + (yt + 1) * 32, col, 0)
+    screen.render(xo + 8, yo + 8, xt + 1 + (yt + 1) * 32, col, 0)
+  }
+
+  touchedBy(entity) {
+    if (entity instanceof Player) {
+      entity.hurt(this, this.lvl, this.dir)
+    }
+  }
+}
+
 
 
 

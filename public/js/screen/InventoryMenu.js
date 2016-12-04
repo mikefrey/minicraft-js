@@ -5,44 +5,43 @@
 // import com.mojang.ld22.gfx.Screen;
 // import com.mojang.ld22.item.Item;
 
-function InventoryMenu(player) {
-  this.player = player;
-  this.selected = 0;
+class InventoryMenu extends Menu {
+  
+  constructor(player) {
+    super()
+    this.player = player
+    this.selected = 0
 
-  if (player.activeItem != null) {
-    player.inventory.items.unshift(player.activeItem);
-    player.activeItem = null;
+    if (player.activeItem != null) {
+      player.inventory.items.unshift(player.activeItem)
+      player.activeItem = null
+    }
   }
-}
 
-InventoryMenu.Super = Menu.prototype;
-InventoryMenu.prototype = extend(new Menu(), {
+  tick() {
+    const input = this.input
+    if (input.menu.clicked) game.setMenu(null)
 
-  tick: function() {
-    var input = this.input;
-    if (input.menu.clicked) game.setMenu(null);
+    if (input.up.clicked) this.selected--
+    if (input.down.clicked) this.selected++
 
-    if (input.up.clicked) this.selected--;
-    if (input.down.clicked) this.selected++;
-
-    var len = this.player.inventory.items.length;
-    if (len == 0) this.selected = 0;
-    if (this.selected < 0) this.selected += len;
-    if (this.selected >= len) this.selected -= len;
+    const len = this.player.inventory.items.length
+    if (len == 0) this.selected = 0
+    if (this.selected < 0) this.selected += len
+    if (this.selected >= len) this.selected -= len
 
     if (input.attack.clicked && len > 0) {
-      var item = this.player.inventory.items.remove(this.selected);
-      this.player.activeItem = item;
-      this.game.setMenu(null);
+      const item = this.player.inventory.items.remove(this.selected)
+      this.player.activeItem = item
+      this.game.setMenu(null)
     }
-  },
-
-  render: function(screen) {
-    Font.renderFrame(screen, 'inventory', 1, 1, 12, 11);
-    this.renderItemList(screen, 1, 1, 12, 11, this.player.inventory.items, this.selected);
   }
 
-});
+  render(screen) {
+    Font.renderFrame(screen, 'inventory', 1, 1, 12, 11)
+    this.renderItemList(screen, 1, 1, 12, 11, this.player.inventory.items, this.selected)
+  }
+}
 
 
 

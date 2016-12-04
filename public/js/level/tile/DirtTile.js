@@ -12,44 +12,41 @@
 // import com.mojang.ld22.level.Level;
 // import com.mojang.ld22.sound.Sound;
 
-function DirtTile(id) {
-  DirtTile.Super.init.call(this, id);
-}
+class DirtTile extends Tile {
+  constructor(id) {
+    super(id)
+  }
 
-DirtTile.Super = Tile.prototype;
-DirtTile.prototype = extend(new Tile(), {
+  render(screen, level, x, y) {
+    const col = Color.get(level.dirtColor, level.dirtColor, level.dirtColor - 111, level.dirtColor - 111)
+    screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0)
+    screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0)
+    screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0)
+    screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0)
+  }
 
-  render: function(screen, level, x, y) {
-    var col = Color.get(level.dirtColor, level.dirtColor, level.dirtColor - 111, level.dirtColor - 111);
-    screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0);
-    screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0);
-    screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0);
-    screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0);
-  },
-
-  interact: function(level, xt, yt, player, item, attackDir) {
+  interact(level, xt, yt, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if (tool.type == ToolItem.shovel) {
         if (player.payStamina(4 - tool.level)) {
-          level.setTile(xt, yt, Tile.hole, 0);
-          level.add(new ItemEntity(new ResourceItem(Resource.dirt), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3));
-          Sound.monsterHurt.play();
-          return true;
+          level.setTile(xt, yt, Tile.hole, 0)
+          level.add(new ItemEntity(new ResourceItem(Resource.dirt), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3))
+          Sound.monsterHurt.play()
+          return true
         }
       }
       if (tool.type == ToolType.hoe) {
         if (player.payStamina(4 - tool.level)) {
-          level.setTile(xt, yt, Tile.farmland, 0);
-          Sound.monsterHurt.play();
-          return true;
+          level.setTile(xt, yt, Tile.farmland, 0)
+          Sound.monsterHurt.play()
+          return true
         }
       }
     }
-    return false;
+    return false
   }
-
-});
+}
 
 
 

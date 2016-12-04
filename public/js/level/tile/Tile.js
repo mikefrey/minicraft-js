@@ -10,52 +10,47 @@
 // import com.mojang.ld22.item.resource.Resource;
 // import com.mojang.ld22.level.Level;
 
-function Tile() { }
-Tile.tickCount = 0;
-Tile.tiles = [];
+class Tile {
 
-Tile.prototype = {
+  constructor(id) {
+    this.id = id
+    //if (Tile.tiles[id] != null) throw "Duplicate tile ids!"
+    Tile.tiles[id] = this
 
-  init: function(id) {
-    this.id = id;
-    //if (Tile.tiles[id] != null) throw "Duplicate tile ids!";
-    Tile.tiles[id] = this;
-
-    this.connectsToGrass = false;
-    this.connectsToSand = false;
-    this.connectsToLava = false;
-    this.connectsToWater = false;
-  },
-
-  mayPass: function(level, x, y, e) {
-    return true;
-  },
-
-  getLightRadius: function(level, x, y) {
-    return 0;
-  },
-
-  hurt: function(level, x, y, source, dmg, attackDir) { },
-
-  bumpedInto: function(level, xt, yt, entity) { },
-
-  tick: function(level, xt, yt) { },
-
-  steppedOn: function(level, xt, yt, entity) { },
-
-  interact: function(level, xt, yt, player, item, attackDir) {
-    return false;
-  },
-
-  use: function(level, xt, yt, player, attackDir) {
-    return false;
-  },
-
-  connectsToLiquid: function() {
-    return this.connectsToWater || this.connectsToLava;
+    this.connectsToGrass = false
+    this.connectsToSand = false
+    this.connectsToLava = false
+    this.connectsToWater = false
   }
 
-};
+  mayPass(level, x, y, e) {
+    return true
+  }
+
+  getLightRadius(level, x, y) {
+    return 0
+  }
+
+  hurt(level, x, y, source, dmg, attackDir) { }
+  bumpedInto(level, xt, yt, entity) { }
+  tick(level, xt, yt) { }
+  steppedOn(level, xt, yt, entity) { }
+
+  interact(level, xt, yt, player, item, attackDir) {
+    return false
+  }
+
+  use(level, xt, yt, player, attackDir) {
+    return false
+  }
+
+  connectsToLiquid() {
+    return this.connectsToWater || this.connectsToLava
+  }
+}
+
+Tile.tickCount = 0
+Tile.tiles = []
 
 
 

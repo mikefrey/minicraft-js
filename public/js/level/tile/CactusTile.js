@@ -11,51 +11,49 @@
 // import com.mojang.ld22.item.resource.Resource;
 // import com.mojang.ld22.level.Level;
 
-function CactusTile(id) {
-  CactusTile.Super.init.call(this, id);
-  this.connectsToSand = true;
-}
+class CactusTile extends Tile {
 
-CactusTile.Super = Tile.prototype;
-CactusTile.prototype = extend(new Tile(), {
-
-  render: function(screen, level, x, y) {
-    var col = Color.get(20, 40, 50, level.sandColor);
-    screen.render(x * 16 + 0, y * 16 + 0, 8 + 2 * 32, col, 0);
-    screen.render(x * 16 + 8, y * 16 + 0, 9 + 2 * 32, col, 0);
-    screen.render(x * 16 + 0, y * 16 + 8, 8 + 3 * 32, col, 0);
-    screen.render(x * 16 + 8, y * 16 + 8, 9 + 3 * 32, col, 0);
-  },
-
-  mayPass: function(level, x, y, e) {
-    return false;
-  },
-
-  hurt: function(level, x, y, source, dmg, attackDir) {
-    var damage = level.getData(x, y) + dmg;
-    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8));
-    level.add(new TextParticle('' + dmg, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)));
-    if (damage >= 10) {
-      var count = random.nextInt(2) + 1;
-      for (var i = 0; i < count; i++) {
-        level.add(new ItemEntity(new ResourceItem(Resource.cactusFlower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-      }
-      level.setTile(x, y, Tile.sand, 0);
-    } else {
-      level.setData(x, y, damage);
-    }
-  },
-
-  bumpedInto: function(level, x, y, entity) {
-    entity.hurt(this, x, y, 1);
-  },
-
-  tick: function(level, xt, yt) {
-    var damage = level.getData(xt, yt);
-    if (damage > 0) level.setData(xt, yt, damage - 1);
+  constructor(id) {
+    super(id)
+    this.connectsToSand = true
   }
 
-});
+  render(screen, level, x, y) {
+    const col = Color.get(20, 40, 50, level.sandColor)
+    screen.render(x * 16 + 0, y * 16 + 0, 8 + 2 * 32, col, 0)
+    screen.render(x * 16 + 8, y * 16 + 0, 9 + 2 * 32, col, 0)
+    screen.render(x * 16 + 0, y * 16 + 8, 8 + 3 * 32, col, 0)
+    screen.render(x * 16 + 8, y * 16 + 8, 9 + 3 * 32, col, 0)
+  }
+
+  mayPass(level, x, y, e) {
+    return false
+  }
+
+  hurt(level, x, y, source, dmg, attackDir) {
+    const damage = level.getData(x, y) + dmg
+    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8))
+    level.add(new TextParticle(`${dmg}`, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)))
+    if (damage >= 10) {
+      const count = random.nextInt(2) + 1
+      for (let i = 0; i < count; i++) {
+        level.add(new ItemEntity(new ResourceItem(Resource.cactusFlower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+      }
+      level.setTile(x, y, Tile.sand, 0)
+    } else {
+      level.setData(x, y, damage)
+    }
+  }
+
+  bumpedInto(level, x, y, entity) {
+    entity.hurt(this, x, y, 1)
+  }
+
+  tick(level, xt, yt) {
+    const damage = level.getData(xt, yt)
+    if (damage > 0) level.setData(xt, yt, damage - 1)
+  }
+}
 
 
 

@@ -1,13 +1,14 @@
 // package com.mojang.ld22.gfx;
 
-function Sprite(x, y, img, col, bits) {
-	this.x = x;
-	this.y = y;
-	this.img = img;
-	this.col = col;
-	this.bits = bits;
+class Sprite {
+	constructor(x, y, img, col, bits) {
+		this.x = x
+		this.y = y
+		this.img = img
+		this.col = col
+		this.bits = bits
+	}
 }
-
 
 // public class Sprite {
 // 	public int x, y;

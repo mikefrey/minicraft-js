@@ -1,21 +1,23 @@
 // package com.mojang.ld22.gfx;
 
-var Font = (function(){
-	var chars =
-			"ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
-			"0123456789.,!?'\"-+=/\\%()<>:;     ";
+class Font {
 
-	function draw(msg, screen, x, y, col) {
+	static get chars() {
+		return "ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
+		       "0123456789.,!?'\"-+=/\\%()<>:;     "
+	}
+
+	static draw(msg, screen, x, y, col) {
 		msg = msg.toUpperCase();
 		for (var i = 0; i < msg.length; i++) {
-			var ix = chars.indexOf(msg.charAt(i));
+			var ix = Font.chars.indexOf(msg.charAt(i));
 			if (ix >= 0) {
 				screen.render(x + i * 8, y, ix + 30 * 32, col, 0);
 			}
 		}
 	}
 
-	function renderFrame(screen, title, x0, y0, x1, y1) {
+	static renderFrame(screen, title, x0, y0, x1, y1) {
 		for (var y = y0; y <= y1; y++) {
 			for (var x = x0; x <= x1; x++) {
 				if (x == x0 && y == y0)
@@ -39,15 +41,12 @@ var Font = (function(){
 			}
 		}
 
-		draw(title, screen, x0 * 8 + 8, y0 * 8, Color.get(5, 5, 5, 550));
+		Font.draw(title, screen, x0 * 8 + 8, y0 * 8, Color.get(5, 5, 5, 550));
 	}
-
-
-	return {
-		draw: draw,
-		renderFrame: renderFrame
-	}
-})();
+}
+// 
+// Font.chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + //
+//              "0123456789.,!?'\"-+=/\\%()<>:;     ";
 
 
 // public class Font {

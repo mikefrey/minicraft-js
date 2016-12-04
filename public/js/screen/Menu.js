@@ -8,48 +8,42 @@
 // import com.mojang.ld22.gfx.Font;
 // import com.mojang.ld22.gfx.Screen;
 
-function Menu() {
 
-}
-
-Menu.prototype = {
-
-  init: function(game, input) {
+class Menu {
+  init(game, input) {
     this.input = input;
     this.game = game;
-  },
+  }
 
-  tick: function() { },
+  tick() { }
+  render() { }
 
-  render: function() { },
-
-  renderItemList: function(screen, xo, yo, x1, y1, listItems, selected) {
-    var renderCursor = true;
+  renderItemList(screen, xo, yo, x1, y1, listItems, selected) {
+    let renderCursor = true;
     if (selected < 0) {
       selected = -selected -1;
       renderCursor = false;
     }
-    var w = x1 - xo;
-    var h = y1 - yo - 1;
-    var i0 = 0;
-    var i1 = listItems.length;
+    const w = x1 - xo;
+    const h = y1 - yo - 1;
+    const i0 = 0;
+    let i1 = listItems.length;
     if (i1 > h) i1 = h;
-    var io = selected - h / 2 | 0;
+    let io = selected - h / 2 | 0;
     if (io > listItems.length - h) io = listItems.length - h;
     if (io < 0) io = 0;
 
-    for (var i = i0; i < i1; i++) {
+    for (let i = i0; i < i1; i++) {
       listItems[i+io].renderInventory(screen, (1 + xo) * 8, (i + 1 + yo) * 8);
     }
 
     if (renderCursor) {
-      var yy = selected + 1 - io + yo;
+      const yy = selected + 1 - io + yo;
       Font.draw('>', screen, (xo + 0) * 8, yy * 8, Color.get(5, 555, 555, 555));
       Font.draw('<', screen, (xo + w) * 8, yy * 8, Color.get(5, 555, 555, 555));
     }
   }
-
-};
+}
 
 
 

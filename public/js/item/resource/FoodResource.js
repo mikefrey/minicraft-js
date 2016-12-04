@@ -4,24 +4,22 @@
 // import com.mojang.ld22.level.Level;
 // import com.mojang.ld22.level.tile.Tile;
 
-function FoodResource(name, sprite, color, heal, staminaCost) {
-  this.init(name, sprite, color);
-  this.heal = heal;
-  this.staminaCost = staminaCost;
-}
-
-FoodResource.Super = Resource.prototype;
-FoodResource.prototype = extend(new Resource(), {
-
-  interactOn: function(tile, level, xt, yt, player, attackDir) {
-    if (player.health < player.maxHealth && player.payStamina(this.staminaCost)) {
-      player.heal(heal);
-      return true;
-    }
-    return false;
+class FoodResource extends Resource {
+  constructor(name, sprite, color, heal, staminaCost) {
+    super(name, sprite, color)
+    this.heal = heal
+    this.staminaCost = staminaCost
   }
 
-});
+  interactOn(tile, level, xt, yt, player, attackDir) {
+    if (player.health < player.maxHealth && player.payStamina(this.staminaCost)) {
+      player.heal(heal)
+      return true
+    }
+    return false
+  }
+}
+
 
 // public class FoodResource extends Resource {
 //  private int heal;

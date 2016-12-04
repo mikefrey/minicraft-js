@@ -15,60 +15,57 @@
 // import com.mojang.ld22.item.ToolType;
 // import com.mojang.ld22.level.Level;
 
-function CloudCactusTile(id) {
-  CloudCactusTile.Super.init.call(this, id);
-}
+class CloudCactusTile extends Tile {
 
-CloudCactusTile.Super = Tile.prototype;
-CloudCactusTile.prototype = extend(new Tile(), {
+  constructor(id) {
+    super(id)
+  }
 
-  render: function(screen, level, x, y) {
-    var color = Color.get(444, 111, 333, 555);
-    screen.render(x * 16 + 0, y * 16 + 0, 17 + 1 * 32, color, 0);
-    screen.render(x * 16 + 8, y * 16 + 0, 18 + 1 * 32, color, 0);
-    screen.render(x * 16 + 0, y * 16 + 8, 17 + 2 * 32, color, 0);
-    screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0);
-  },
+  render(screen, level, x, y) {
+    const color = Color.get(444, 111, 333, 555)
+    screen.render(x * 16 + 0, y * 16 + 0, 17 + 1 * 32, color, 0)
+    screen.render(x * 16 + 8, y * 16 + 0, 18 + 1 * 32, color, 0)
+    screen.render(x * 16 + 0, y * 16 + 8, 17 + 2 * 32, color, 0)
+    screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0)
+  }
 
-  mayPass: function(level, x, y, e) {
-    if (e instanceof AirWizard) return true;
-    return false;
-  },
+  mayPass(level, x, y, e) {
+    if (e instanceof AirWizard) return true
+    return false
+  }
 
-  interact: function(level, xt, yt, player, item, attackDir) {
+  interact(level, xt, yt, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if (tool.type == ToolType.pickaxe) {
         if (player.payStamina(6 - tool.level)) {
-          this.hurt(level, xt, yt, 1);
-          return true;
+          this.hurt(level, xt, yt, 1)
+          return true
         }
       }
     }
-  },
-
-  hurt: function(level, x, y, source, dmg, attackDir) {
-    if (typeof source != 'object') dmg = source;
-
-    var damage = level.getData(x, y) + 1;
-    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8));
-    level.add(new TextParticle('' + dmg, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)));
-    if (dmg > 0) {
-      if (damage >= 10) {
-        level.setTile(x, y, Tile.cloud, 0);
-      } else {
-        level.setData(x, y, damage);
-      }
-    }
-  },
-
-  bumpedInto: function(level, x, y, entity) {
-    if (entity instanceof AirWizard) return;
-    entity.hurt(this, x, y, 3);
   }
 
+  hurt(level, x, y, source, dmg, attackDir) {
+    if (typeof source != 'object') dmg = source
 
-});
+    const damage = level.getData(x, y) + 1
+    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8))
+    level.add(new TextParticle(`${dmg}`, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)))
+    if (dmg > 0) {
+      if (damage >= 10) {
+        level.setTile(x, y, Tile.cloud, 0)
+      } else {
+        level.setData(x, y, damage)
+      }
+    }
+  }
+
+  bumpedInto(level, x, y, entity) {
+    if (entity instanceof AirWizard) return
+    entity.hurt(this, x, y, 3)
+  }
+}
 
 
 

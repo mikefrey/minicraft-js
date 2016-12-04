@@ -8,69 +8,71 @@
 // import com.mojang.ld22.item.resource.Resource;
 
 
-function Inventory() {
-  this.items = [];
-}
+class Inventory {
 
-Inventory.prototype = {
-
-  add: function(item) {
-    this.items.push(item);
-  },
-
-  insert: function(slot, item) {
-    if (item instanceof ResourceItem) {
-      var toTake = item;
-      var has = this.findResource(toTake.resource);
-      if (has == null) {
-        this.items.splice(slot, 0, item);
-      } else {
-        has.count += toTake.count;
-      }
-    } else {
-      this.items.splice(slot, 0, item);
-    }
-  },
-
-  findResource: function(resource) {
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i] instanceof ResourceItem) {
-        var has = this.items[i];
-        if (has.resource == resource) return has;
-      }
-    }
-    return null;
-  },
-
-  hasResources: function(r, count) {
-    var ri = this.findResource(r);
-    if (ri == null) return false;
-    return ri.count >= count;
-  },
-
-  removeResource: function(r, count) {
-    var ri = this.findResource(r);
-    if (ri == null) return false;
-    if (ri.count < count) return false;
-    ri.count -= count;
-    if (ri.count <= 0) this.items.remove(ri);  // TODO : array does not have remove
-  },
-
-  count: function(item) {
-    if (item instanceof ResourceItem) {
-      var ri = this.findResource(item.resource);
-      if (ri != null) return ri.count;
-    } else {
-      var count = 0;
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].matches(item)) count++;
-      }
-      return count;
-    }
-    return 0;
+  constructor() {
+    this.items = []
   }
 
-};
+  add(item) {
+    this.items.push(item)
+  }
+
+  insert(slot, item) {
+    if (item instanceof ResourceItem) {
+      const toTake = item
+      const has = this.findResource(toTake.resource)
+      if (has == null) {
+        this.items.splice(slot, 0, item)
+      } else {
+        has.count += toTake.count
+      }
+    } else {
+      this.items.splice(slot, 0, item)
+    }
+  }
+
+  findResource(resource) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i] instanceof ResourceItem) {
+        const has = this.items[i]
+        if (has.resource == resource) return has
+      }
+    }
+    return null
+  }
+
+  hasResources(r, count) {
+    const ri = this.findResource(r)
+    if (ri == null) return false
+    return ri.count >= count
+  }
+
+  removeResource(r, count) {
+    const ri = this.findResource(r)
+    if (ri == null) return false
+    if (ri.count < count) return false
+    ri.count -= count
+    if (ri.count <= 0) {
+      this.items.splice(this.items.indexOf(ri), 1)
+    }
+  }
+
+  count(item) {
+    if (item instanceof ResourceItem) {
+      const ri = this.findResource(item.resource)
+      if (ri != null) return ri.count
+    } else {
+      let count = 0
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].matches(item)) count++
+      }
+      return count
+    }
+    return 0
+  }
+
+}
 
 
 

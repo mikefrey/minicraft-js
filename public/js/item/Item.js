@@ -8,58 +8,49 @@
 // import com.mojang.ld22.level.tile.Tile;
 // import com.mojang.ld22.screen.ListItem;
 
-function Item() {
+class Item extends ListItem {
+    getColor() {
+			return 0;
+		}
 
+    getSprite() {
+			return 0;
+		}
+
+    onTake(itemEntity) { }
+	    renderInventory(screen, x, y) { }
+
+	    interact(player, entity, attackDir) {
+			return false;
+		}
+
+    renderIcon(screen, x, y) { }
+
+	    interactOn(tile, level, xt, yt, player, attackDir) {
+			return false;
+		}
+
+    isDepleted() {
+			return false;
+		}
+
+    canAttack() {
+			return false;
+		}
+
+    getAttackDamageBonus(e) {
+			return 0;
+		}
+
+    getName() {
+			return '';
+		}
+
+    matches(item) {
+			//return item.getClass() == this.getClass();
+			return item.constructor == this.constructor;
+		}
 }
-
-Item.Super = ListItem.prototype;
-Item.prototype = extend(new ListItem(), {
-
-	getColor: function() {
-		return 0;
-	},
-
-	getSprite: function() {
-		return 0;
-	},
-
-	onTake: function(itemEntity) { },
-
-	renderInventory: function(screen, x, y) { },
-
-	interact: function(player, entity, attackDir) {
-		return false;
-	},
-
-	renderIcon: function(screen, x, y) { },
-
-	interactOn: function(tile, level, xt, yt, player, attackDir) {
-		return false;
-	},
-
-	isDepleted: function() {
-		return false;
-	},
-
-	canAttack: function() {
-		return false;
-	},
-
-	getAttackDamageBonus: function(e) {
-		return 0;
-	},
-
-	getName: function() {
-		return '';
-	},
-
-	matches: function(item) {
-		//return item.getClass() == this.getClass();
-		return item.constructor == this.constructor;
-	}
-
-});
-
 
 
 // public class Item implements ListItem {

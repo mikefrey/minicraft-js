@@ -12,54 +12,51 @@
 // import com.mojang.ld22.item.resource.Resource;
 // import com.mojang.ld22.screen.ListItem;
 
-function Recipe() { }
+class Recipe {
 
-Recipe.prototype = {
+  constructor(resultTemplate) {
+    this.costs = []
+    this.canCraft = false
+    this.resultTemlate = resultTemplate
+  }
 
-  init: function(resultTemplate) {
-    this.costs = [];
-    this.canCraft = false;
-    this.resultTemlate = resultTemplate;
-  },
+  addCost(resource, count) {
+    this.costs.push(new ResourceItem(resource, count))
+    return this
+  }
 
-  addCost: function(resource, count) {
-    this.costs.push(new ResourceItem(resource, count));
-    return this;
-  },
-
-  checkCanCraft: function(player) {
-    for (var i = 0; i < costs.length; i++) {
-      var item = costs[i];
+  checkCanCraft(player) {
+    for (const item of costs) {
       if (item instanceof ResourceItem) {
-        var ri = item;
+        const ri = item
         if (!player.inventory.hasResources(ri.resource, ri.count)) {
-          this.canCraft = false;
-          return;
+          this.canCraft = false
+          return
         }
       }
     }
-    this.canCraft = true;
-  },
 
-  renderInventory: function(screen, x, y) {
-    screen.render(x, y, this.resultTemlate.getSprite(), this.resultTemlate.getColor(), 0);
-    var textColor = this.canCraft ? Color.get(-1, 555, 555, 555) : Color.get(-1, 222, 222, 222);
-    Font.draw(this.resultTemlate.getName(), screen, x + 8, y, textColor);
-  },
+    this.canCraft = true
+  }
 
-  craft: function(player) { },
+  renderInventory(screen, x, y) {
+    screen.render(x, y, this.resultTemlate.getSprite(), this.resultTemlate.getColor(), 0)
+    const textColor = this.canCraft ? Color.get(-1, 555, 555, 555) : Color.get(-1, 222, 222, 222)
+    Font.draw(this.resultTemlate.getName(), screen, x + 8, y, textColor)
+  }
 
-  deductCost: function(player) {
-    for (var i = 0; i < this.costs.length; i++) {
-      var item = costs[i];
+  craft(player) { }
+
+  deductCost(player) {
+    for (let i = 0; i < this.costs.length; i++) {
+      const item = costs[i]
       if (item instanceof ResourceItem) {
-        var ri = item;
-        player.inventory.removeResource(ri.resource, ri.count);
+        const ri = item
+        player.inventory.removeResource(ri.resource, ri.count)
       }
     }
   }
-
-};
+}
 
 
 

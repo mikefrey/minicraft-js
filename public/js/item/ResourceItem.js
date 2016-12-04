@@ -10,52 +10,52 @@
 // import com.mojang.ld22.level.tile.Tile;
 
 
-function ResourceItem(resource, count) {
-  this.resource = resource;
-  this.count = (count === count) ? count : 1;
-}
+class ResourceItem extends Item {
 
-ResourceItem.Super = Item.prototype;
-ResourceItem.prototype = extend(new Item(), {
-
-  getColor: function() {
-    return this.resource.color;
-  },
-
-  getSprite: function() {
-    return this.resource.sprite;
-  },
-
-  getName: function() {
-    return this.resource.name;
-  },
-
-  renderIcon: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-  },
-
-  renderInventory: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-    Font.draw(this.getName(), screen, x + 32, y, Color.get(-1, 555, 555, 555));
-    var cc = Math.min(this.count, 999);
-    Font.draw("" + cc, screen, x + 8, y, Color.get(-1, 444, 444, 444));
-  },
-
-  onTake: function(itemEntity) { },
-
-  interactOn: function(tile, level, xt, yt, player, attackDir) {
-    if (this.resource.interactOn(tile, level, xt, yt, player, attackDir)) {
-      this.count--;
-      return true;
-    }
-    return false;
-  },
-
-  isDepleted: function() {
-    return this.count <= 0;
+  constructor(resource, count) {
+    super()
+    this.resource = resource
+    this.count = count || 1
   }
 
-});
+  getColor() {
+    return this.resource.color
+  }
+
+  getSprite() {
+    return this.resource.sprite
+  }
+
+  getName() {
+    return this.resource.name
+  }
+
+  renderIcon(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+  }
+
+  renderInventory(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+    Font.draw(this.getName(), screen, x + 32, y, Color.get(-1, 555, 555, 555))
+    const cc = Math.min(this.count, 999)
+    Font.draw(`${cc}`, screen, x + 8, y, Color.get(-1, 444, 444, 444))
+  }
+
+  onTake(itemEntity) { }
+
+  interactOn(tile, level, xt, yt, player, attackDir) {
+    if (this.resource.interactOn(tile, level, xt, yt, player, attackDir)) {
+      this.count--
+      return true
+    }
+    return false
+  }
+
+  isDepleted() {
+    return this.count <= 0
+  }
+}
+
 
 
 

@@ -421,7 +421,7 @@ extend(LevelGen, {
 			}
 			img.setRGB(0, 0, w, h, pixels, 0, w);
 			if (confirm("Another?")) {
-				console.log(img);
+				console.log('LevelGen', img);
 			}
 		}
 	}

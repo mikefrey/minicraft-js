@@ -5,18 +5,28 @@
 
 
 
-function Sound(name) {
-  var format = Sound.format != null ? Sound.format : Sound.detectFormat();
-  var clip = this.clip = new Audio();
-  clip.src = '../res/' + name + '.' + format.ext;
-  clip.load();
-}
+class Sound {
 
-Sound.prototype = {
+  constructor(name) {
+    const format = Sound.format != null ? Sound.format : Sound.detectFormat()
+    const clip = this.clip = new Audio()
+    clip.src = `../res/${name}.${format.ext}`
+    clip.load()
+    clip.addEventListener('ended', this.ended.bind(this))
+  }
 
-  play: function() {
-    if (!Sound.enabled) return false;
-    this.clip.play();
+  play() {
+    if (!Sound.enabled) return false
+
+    if (this.playing) {
+      this.clip.pause()
+    }
+    this.playing = true
+    this.clip.play()
+  }
+
+  ended() {
+    this.playing = false
   }
 
 };

@@ -12,51 +12,48 @@
 // import com.mojang.ld22.item.resource.Resource;
 // import com.mojang.ld22.level.Level;
 
-function FlowerTile(id) {
-  FlowerTile.Super.init.call(this, id);
-  Tile.tiles[id] = this;
-  this.connectsToGrass = true;
-}
+class FlowerTile extends GrassTile {
+  constructor(id) {
+    super(id)
+    Tile.tiles[id] = this
+    this.connectsToGrass = true
+  }
 
-FlowerTile.Super = GrassTile.prototype;
-FlowerTile.prototype = extend(new GrassTile(), {
+  render(screen, level, x, y) {
+    super.render(screen, level, x, y)
 
-  render: function(screen, level, x, y) {
-    FlowerTile.Super.render.call(this, screen, level, x, y);
+    const data = level.getData(x, y)
+    const shape = (data / 16) % 2 | 0
+    const flowerCol = Color.get(10, level.grassColor, 555, 440)
 
-    var data = level.getData(x, y);
-    var shape = (data / 16) % 2 | 0;
-    var flowerCol = Color.get(10, level.grassColor, 555, 440);
+    if (shape == 0) screen.render(x * 16 + 0, y * 16 + 0, 1 + 1 * 32, flowerCol, 0)
+    if (shape == 1) screen.render(x * 16 + 8, y * 16 + 0, 1 + 1 * 32, flowerCol, 0)
+    if (shape == 1) screen.render(x * 16 + 0, y * 16 + 8, 1 + 1 * 32, flowerCol, 0)
+    if (shape == 0) screen.render(x * 16 + 8, y * 16 + 8, 1 + 1 * 32, flowerCol, 0)
+  }
 
-    if (shape == 0) screen.render(x * 16 + 0, y * 16 + 0, 1 + 1 * 32, flowerCol, 0);
-    if (shape == 1) screen.render(x * 16 + 8, y * 16 + 0, 1 + 1 * 32, flowerCol, 0);
-    if (shape == 1) screen.render(x * 16 + 0, y * 16 + 8, 1 + 1 * 32, flowerCol, 0);
-    if (shape == 0) screen.render(x * 16 + 8, y * 16 + 8, 1 + 1 * 32, flowerCol, 0);
-  },
-
-  interact: function(level, x, y, player, item, attackDir) {
+  interact(level, x, y, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if (tool.type == ToolType.shovel) {
         if (player.payStamina(4 - tool.level)) {
-          level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-          level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-          level.setTile(x, y, Tile.grass, 0);
-          return true;
+          level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+          level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+          level.setTile(x, y, Tile.grass, 0)
+          return true
         }
       }
     }
-    return false;
-  },
-
-  hurt: function(level, x, y, source, dmg, attackDir) {
-    var count = random.nextInt(2) + 1;
-    for (var i = 0; i < count; i++) {
-      level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-    }
+    return false
   }
 
-});
+  hurt(level, x, y, source, dmg, attackDir) {
+    const count = random.nextInt(2) + 1
+    for (let i = 0; i < count; i++) {
+      level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+    }
+  }
+}
 
 // public class FlowerTile extends GrassTile {
 //  public FlowerTile(int id) {

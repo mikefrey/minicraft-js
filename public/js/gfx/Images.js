@@ -12,7 +12,7 @@ function Img(path, fn) {
 Img.prototype = {
 
   getData: function(x, y, w, h) {
-    console.log(x, y, w, h)
+    console.log(`Img#getData: x: ${x}, y: ${y}, w: ${w}, h: ${h}`)
     return this.ctx.getImageData(x, y, w, h);
   },
 
@@ -29,26 +29,26 @@ Img.prototype = {
     var ctx = this.ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
 
-    ctx.save();
-    ctx.scale(-1, 1);
-    ctx.drawImage(img, -this.width * 2, 0);
-    ctx.restore();
-
-    ctx.save();
-    ctx.scale(1, -1);
-    ctx.drawImage(img, 0, -this.height * 2);
-    ctx.restore();
-
-    ctx.save();
-    ctx.scale(-1, -1);
-    ctx.drawImage(img, -this.width * 2, -this.height * 2);
-    ctx.restore();
+    // ctx.save();
+    // ctx.scale(-1, 1);
+    // ctx.drawImage(img, -this.width * 2, 0);
+    // ctx.restore();
+    //
+    // ctx.save();
+    // ctx.scale(1, -1);
+    // ctx.drawImage(img, 0, -this.height * 2);
+    // ctx.restore();
+    //
+    // ctx.save();
+    // ctx.scale(-1, -1);
+    // ctx.drawImage(img, -this.width * 2, -this.height * 2);
+    // ctx.restore();
 
     this.fn();
   },
 
   onerror: function() {
-    console.log("IMAGE LOAD ERROR:", arguments);
+    console.log('IMAGE LOAD ERROR:', arguments);
   }
 
 };

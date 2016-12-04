@@ -6,26 +6,26 @@
 // import com.mojang.ld22.level.tile.Tile;
 // import com.mojang.ld22.sound.Sound;
 
-function Mob() {
-  this.walkDist = 0;
-  this.dir = 0;
-  this.hurtTime = 0;
-  this.xKnockback = 0;
-  this.yKnockback = 0;
-  this.maxHealth = 10;
-  this.health = this.maxHealth;
-  this.swimTimer = 0;
-  this.tickTime = 0;
+class Mob extends Entity {
+  constructor() {
+    super()
+    this.walkDist = 0;
+    this.dir = 0;
+    this.hurtTime = 0;
+    this.xKnockback = 0;
+    this.yKnockback = 0;
+    this.maxHealth = 10;
+    this.health = this.maxHealth;
+    this.swimTimer = 0;
+    this.tickTime = 0;
 
-  this.x = this.y = 8;
-  this.xr = 4;
-  this.yr = 3;
-}
+    this.x = this.y = 8;
+    this.xr = 4;
+    this.yr = 3;
+  }
 
-Mob.Super = Entity.prototype;
-Mob.prototype = extend(new Entity(), {
-
-  tick: function() {
+  // Mob.prototype = extend(new Entity(), {
+  tick() {
     this.tickTime++;
     if (this.level.getTile(this.x >> 4, this.y >> 4) == Tile.lava) {
       this.hurt(this, 4, dir ^ 1);
@@ -35,13 +35,13 @@ Mob.prototype = extend(new Entity(), {
       this.die();
     }
     if (this.hurtTime > 0) this.hurtTime--;
-  },
+  }
 
-  die: function() {
+  die() {
     this.remove();
-  },
+  }
 
-  move: function(xa, ya) {
+  move(xa, ya) {
     if (this.isSwimming()) {
       if (this.swimTimer++ % 2 == 0) return true;
     }
@@ -69,17 +69,17 @@ Mob.prototype = extend(new Entity(), {
       if (ya < 0) this.dir = 1;
       if (ya > 0) this.dir = 0;
     }
-    return Mob.Super.move.call(this, xa, ya);
-  },
+    return super.move(xa, ya)
+  }
 
-  isSwimming: function() {
-    var tile = this.level.getTile(this.x >> 4, this.y >> 4);
+  isSwimming() {
+    const tile = this.level.getTile(this.x >> 4, this.y >> 4);
     return tile == Tile.water || tile == Tile.lava; // TODO : comparing tiles this way may not work.
-  },
+  }
 
-  blocks: function(/* Entity */ e) {
+  blocks(/* Entity */ e) {
     return e.isBlockableBy(this);
-  },
+  }
 
   // hurt: function(tile, x, y, damage) {
   //  var attackDir = this.dir ^ 1;
@@ -90,54 +90,54 @@ Mob.prototype = extend(new Entity(), {
   //  this.doHurt(damage, attackDir);
   // },
 
-  hurt: function(mob, damage, attackDir) {
+  hurt(mob, damage, attackDir) {
     if (arguments.length == 4) {
       attackDir = this.dir ^ 1;
       damage = arguments[3];
     }
     this.doHurt(damage, attackDir);
-  },
+  }
 
-  heal: function(heal) {
+  heal(heal) {
     if (this.hurtTime > 0) return;
 
-    this.level.add(new TextParticle(heal, x, y, Color.get(-1, 50, 50, 50)));
+    this.level.add(new TextParticle(''+heal, x, y, Color.get(-1, 50, 50, 50)));
     health += heal;
     health = Math.min(health, maxHealth);
-  },
+  }
 
-  doHurt: function(damage, attackDir) {
+  doHurt(damage, attackDir) {
     if (this.hurtTime > 0) return;
 
     if (this.level.player != null) {
-      var xd = this.level.player.x - this.x;
-      var yd = this.level.player.y - this.y;
+      const xd = this.level.player.x - this.x;
+      const yd = this.level.player.y - this.y;
       if (xd * xd + yd * yd < 80 * 80) {
         Sound.monsterHurt.play();
       }
     }
-    this.level.add(new TextParticle(damage, this.x, this.y, Color.get(-1, 500, 500, 500)));
+    this.level.add(new TextParticle(''+damage, this.x, this.y, Color.get(-1, 500, 500, 500)));
     this.health -= damage;
     if (attackDir == 0) this.yKnockback = +6;
     if (attackDir == 1) this.yKnockback = -6;
     if (attackDir == 2) this.xKnockback = -6;
     if (attackDir == 3) this.xKnockback = +6;
     this.hurtTime = 10;
-  },
+  }
 
-  findStartPos: function(level) {
-    var x = random.nextInt(level.w);
-    var y = random.nextInt(level.h);
-    var xx = x * 16 + 8;
-    var yy = y * 16 + 8;
+  findStartPos(level) {
+    const x = random.nextInt(level.w);
+    const y = random.nextInt(level.h);
+    const xx = x * 16 + 8;
+    const yy = y * 16 + 8;
 
     if (level.player != null) {
-      var xd = level.player.x - xx;
-      var yd = level.player.y - yy;
+      const xd = level.player.x - xx;
+      const yd = level.player.y - yy;
       if (xd * xd + yd * yd < 80 * 80) return false;
     }
 
-    var r = level.monsterDensity * 16;
+    const r = level.monsterDensity * 16;
     if (level.getEntities(xx - r, yy - r, xx + r, yy + r).length > 0) return false;
 
     if (level.getTile(x, y).mayPass(level, x, y, this)) {
@@ -148,8 +148,9 @@ Mob.prototype = extend(new Entity(), {
 
     return false;
   }
+}
 
-});
+// Mob.Super = Entity.prototype;
 
 
 // public class Mob extends Entity {

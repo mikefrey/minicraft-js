@@ -13,88 +13,86 @@
 // import com.mojang.ld22.sound.Sound;
 
 
-function GrassTile(id) {
-  GrassTile.Super.init.call(this, id);
-  this.connectsToGrass = true;
-}
+class GrassTile extends Tile {
 
-GrassTile.Super = Tile.prototype;
-GrassTile.prototype = extend(new Tile(), {
+  constructor(id) {
+    super(id)
+    this.connectsToGrass = true
+  }
 
-  render: function(screen, level, x, y) {
-    var col = Color.get(level.grassColor, level.grassColor, level.grassColor + 111, level.grassColor + 111);
-    var transitionColor = Color.get(level.grassColor - 111, level.grassColor, level.grassColor + 111, level.dirtColor);
+  render(screen, level, x, y) {
+    const col = Color.get(level.grassColor, level.grassColor, level.grassColor + 111, level.grassColor + 111)
+    const transitionColor = Color.get(level.grassColor - 111, level.grassColor, level.grassColor + 111, level.dirtColor)
 
-    var u = !level.getTile(x, y - 1).connectsToGrass;
-    var d = !level.getTile(x, y + 1).connectsToGrass;
-    var l = !level.getTile(x - 1, y).connectsToGrass;
-    var r = !level.getTile(x + 1, y).connectsToGrass;
+    const u = !level.getTile(x, y - 1).connectsToGrass
+    const d = !level.getTile(x, y + 1).connectsToGrass
+    const l = !level.getTile(x - 1, y).connectsToGrass
+    const r = !level.getTile(x + 1, y).connectsToGrass
 
     if (!u && !l) {
-      screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0);
+      screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0)
     } else
-      screen.render(x * 16 + 0, y * 16 + 0, (l ? 11 : 12) + (u ? 0 : 1) * 32, transitionColor, 0);
+      screen.render(x * 16 + 0, y * 16 + 0, (l ? 11 : 12) + (u ? 0 : 1) * 32, transitionColor, 0)
 
     if (!u && !r) {
-      screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0);
+      screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0)
     } else
-      screen.render(x * 16 + 8, y * 16 + 0, (r ? 13 : 12) + (u ? 0 : 1) * 32, transitionColor, 0);
+      screen.render(x * 16 + 8, y * 16 + 0, (r ? 13 : 12) + (u ? 0 : 1) * 32, transitionColor, 0)
 
     if (!d && !l) {
-      screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0);
+      screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0)
     } else
-      screen.render(x * 16 + 0, y * 16 + 8, (l ? 11 : 12) + (d ? 2 : 1) * 32, transitionColor, 0);
+      screen.render(x * 16 + 0, y * 16 + 8, (l ? 11 : 12) + (d ? 2 : 1) * 32, transitionColor, 0)
     if (!d && !r) {
-      screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0);
+      screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0)
     } else
-      screen.render(x * 16 + 8, y * 16 + 8, (r ? 13 : 12) + (d ? 2 : 1) * 32, transitionColor, 0);
-  },
+      screen.render(x * 16 + 8, y * 16 + 8, (r ? 13 : 12) + (d ? 2 : 1) * 32, transitionColor, 0)
+  }
 
-  tick: function(level, xt, yt) {
-    if (random.nextInt(40) != 0) return;
+  tick(level, xt, yt) {
+    if (random.nextInt(40) != 0) return
 
-    var xn = xt;
-    var yn = yt;
+    let xn = xt
+    let yn = yt
 
     if (random.nextBoolean())
-      xn += random.nextInt(2) * 2 - 1;
+      xn += random.nextInt(2) * 2 - 1
     else
-      yn += random.nextInt(2) * 2 - 1;
+      yn += random.nextInt(2) * 2 - 1
 
     if (level.getTile(xn, yn) == Tile.dirt) {
-      level.setTile(xn, yn, this, 0);
+      level.setTile(xn, yn, this, 0)
     }
-  },
+  }
 
-  interact: function(level, xt, yt, player, item, attackDir) {
+  interact(level, xt, yt, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if (tool.type == ToolType.shovel) {
         if (player.payStamina(4 - tool.level)) {
-          level.setTile(xt, yt, Tile.dirt, 0);
-          Sound.monsterHurt.play();
+          level.setTile(xt, yt, Tile.dirt, 0)
+          Sound.monsterHurt.play()
           if (random.nextInt(5) == 0) {
-            level.add(new ItemEntity(new ResourceItem(Resource.seeds), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3));
-            return true;
+            level.add(new ItemEntity(new ResourceItem(Resource.seeds), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3))
+            return true
           }
         }
       }
       if (tool.type == ToolType.hoe) {
         if (player.payStamina(4 - tool.level)) {
-          Sound.monsterHurt.play();
+          Sound.monsterHurt.play()
           if (random.nextInt(5) == 0) {
-            level.add(new ItemEntity(new ResourceItem(Resource.seeds), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3));
-            return true;
+            level.add(new ItemEntity(new ResourceItem(Resource.seeds), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3))
+            return true
           }
-          level.setTile(xt, yt, Tile.farmLand, 0);
-          return true;
+          level.setTile(xt, yt, Tile.farmLand, 0)
+          return true
         }
       }
     }
-    return false;
+    return false
   }
-
-});
+}
 
 
 

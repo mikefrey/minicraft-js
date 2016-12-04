@@ -9,57 +9,57 @@
 // import com.mojang.ld22.level.Level;
 // import com.mojang.ld22.level.tile.Tile;
 
-function FurnitureItem(furniture) {
-  this.furniture = furniture;
-  this.placed = false;
-}
-
-FurnitureItem.Super = Item.prototype;
-FurnitureItem.prototype = extend(new Item(), {
-
-  getColor: function() {
-    return this.furniture.col;
-  },
-
-  getSprite: function() {
-    return this.furniture.sprite + 10 * 32;
-  },
-
-  renderIcon: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-  },
-
-  renderInventory: function(screen, x, y) {
-    screen.render(x, y, this.getSprite(), this.getColor(), 0);
-    Font.draw(this.furniture.name, screen, x + 8, y, Color.get(-1, 555, 555, 555));
-  },
-
-  onTake: function(itemEntity) { },
-
-  canAttack: function() {
-    return false;
-  },
-
-  interactOn: function(tile, level, xt, yt, player, attackDir) {
-    if (tile.mayPass(level, xt, yt, this.furniture)) {
-      this.furniture.x = xt * 16 + 8;
-      this.furniture.y = yt * 16 + 8;
-      level.add(this.furniture);
-      this.placed = true;
-      return true;
-    }
-    return false;
-  },
-
-  isDepleted: function() {
-    return this.placed;
-  },
-
-  getName: function() {
-    return this.furniture.name;
+class FurnitureItem extends Item {
+  
+  constructor(furniture) {
+    super()
+    this.furniture = furniture
+    this.placed = false
   }
 
-});
+  // FurnitureItem.Super = Item.prototype
+  getColor() {
+    return this.furniture.col
+  }
+
+  getSprite() {
+    return this.furniture.sprite + 10 * 32
+  }
+
+  renderIcon(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+  }
+
+  renderInventory(screen, x, y) {
+    screen.render(x, y, this.getSprite(), this.getColor(), 0)
+    Font.draw(this.furniture.name, screen, x + 8, y, Color.get(-1, 555, 555, 555))
+  }
+
+  onTake(itemEntity) { }
+
+  canAttack() {
+    return false
+  }
+
+  interactOn(tile, level, xt, yt, player, attackDir) {
+    if (tile.mayPass(level, xt, yt, this.furniture)) {
+      this.furniture.x = xt * 16 + 8
+      this.furniture.y = yt * 16 + 8
+      level.add(this.furniture)
+      this.placed = true
+      return true
+    }
+    return false
+  }
+
+  isDepleted() {
+    return this.placed
+  }
+
+  getName() {
+    return this.furniture.name
+  }
+}
 
 
 

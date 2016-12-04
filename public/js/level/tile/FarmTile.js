@@ -9,46 +9,43 @@
 // import com.mojang.ld22.item.ToolType;
 // import com.mojang.ld22.level.Level;
 
-function FarmTile(id) {
-  FarmTile.Super.init.call(this, id);
-}
+class FarmTile extends Tile {
+  constructor(id) {
+    super(id)
+  }
 
-FarmTile.Super = Tile.prototype;
-FarmTile.prototype = extend(new Tile(), {
+  render(screen, level, x, y) {
+    const col = Color.get(level.dirtColor - 121, level.dirtColor - 11, level.dirtColor, level.dirtColor + 111)
+    screen.render(x * 16 + 0, y * 16 + 0, 2 + 32, col, 1)
+    screen.render(x * 16 + 8, y * 16 + 0, 2 + 32, col, 0)
+    screen.render(x * 16 + 0, y * 16 + 8, 2 + 32, col, 0)
+    screen.render(x * 16 + 8, y * 16 + 8, 2 + 32, col, 1)
+  }
 
-  render: function(screen, level, x, y) {
-    var col = Color.get(level.dirtColor - 121, level.dirtColor - 11, level.dirtColor, level.dirtColor + 111);
-    screen.render(x * 16 + 0, y * 16 + 0, 2 + 32, col, 1);
-    screen.render(x * 16 + 8, y * 16 + 0, 2 + 32, col, 0);
-    screen.render(x * 16 + 0, y * 16 + 8, 2 + 32, col, 0);
-    screen.render(x * 16 + 8, y * 16 + 8, 2 + 32, col, 1);
-  },
-
-  interact: function(level, xt, yt, player, item, attackDir) {
+  interact(level, xt, yt, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if(tool.type == ToolType.shovel) {
         if (player.payStamina(4 - tool.level)) {
-          level.setTile(xt, yt, Tile.dirt, 0);
-          return true;
+          level.setTile(xt, yt, Tile.dirt, 0)
+          return true
         }
       }
     }
-    return false;
-  },
-
-  tick: function(level, xt, yt) {
-    var age = level.getData(xt, yt);
-    if (age < 5) level.setData(xy, yt, age + 1);
-  },
-
-  steppedOn: function(level, xt, yt, entity) {
-    if (random.nextInt(60) != 0) return;
-    if (level.getData(xt, yt) < 5) return;
-    level.setTile(xt, yt, Tile.dirt, 0);
+    return false
   }
 
-});
+  tick(level, xt, yt) {
+    const age = level.getData(xt, yt)
+    if (age < 5) level.setData(xy, yt, age + 1)
+  }
+
+  steppedOn(level, xt, yt, entity) {
+    if (random.nextInt(60) != 0) return
+    if (level.getData(xt, yt) < 5) return
+    level.setTile(xt, yt, Tile.dirt, 0)
+  }
+}
 
 
 

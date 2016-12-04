@@ -16,66 +16,63 @@
 // import com.mojang.ld22.level.Level;
 
 
-function OreTile(id, toDrop) {
-  OreTile.Super.init.call(this, id);
-  this.toDrop = toDrop;
-  this.color = toDrop.color & 0xffff00;
-}
+class OreTile extends Tile {
+  constructor(id, toDrop) {
+    super(id)
+    this.toDrop = toDrop
+    this.color = toDrop.color & 0xffff00
+  }
 
-OreTile.Super = Tile.prototype;
-OreTile.prototype = extend(new Tile(), {
+  render(screen, level, x, y) {
+    this.color = (this.toDrop.color & 0xffffff00) + Color.getChannel(level.dirtColor)
+    screen.render(x * 16 + 0, y * 16 + 0, 17 + 1 * 32, color, 0)
+    screen.render(x * 16 + 8, y * 16 + 0, 18 + 1 * 32, color, 0)
+    screen.render(x * 16 + 0, y * 16 + 8, 17 + 2 * 32, color, 0)
+    screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0)
+  }
 
-  render: function(screen, level, x, y) {
-    this.color = (this.toDrop.color & 0xffffff00) + Color.getChannel(level.dirtColor);
-    screen.render(x * 16 + 0, y * 16 + 0, 17 + 1 * 32, color, 0);
-    screen.render(x * 16 + 8, y * 16 + 0, 18 + 1 * 32, color, 0);
-    screen.render(x * 16 + 0, y * 16 + 8, 17 + 2 * 32, color, 0);
-    screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0);
-  },
+  mayPass(level, x, y, e) {
+    return false
+  }
 
-  mayPass: function(level, x, y, e) {
-    return false;
-  },
-
-  interact: function(level, xy, yt, player, item, attackDir) {
+  interact(level, xy, yt, player, item, attackDir) {
     if (item instanceof ToolItem) {
-      var tool = item;
+      const tool = item
       if (tool.type == ToolType.pickaxe) {
         if (player.payStamina(6 - tool.level)) {
-          this.hurt(level, xt, yt, 1);
-          return true;
+          this.hurt(level, xt, yt, 1)
+          return true
         }
       }
     }
-    return false;
-  },
-
-  hurt: function(level, x, y, source, dmg, attackDir) {
-  //hurt: function(level, x, y, dmg) {
-    dmg || (dmg = source);
-
-    var damage = level.getData(x, y) + 1;
-    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8));
-    level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)));
-    if (dmg > 0) {
-      var count = random.nextInt(2);
-      if (damage >= random.nextInt(10) + 3) {
-        level.setTile(x, y, Tile.dirt, 0);
-        count += 2;
-      } else {
-        level.setData(x, y, damage);
-      }
-      for (var i = 0; i < count; i++) {
-        level.add(new ItemEntity(new ResourceItem(toDrop), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3));
-      }
-    }
-  },
-
-  bumpedInto: function(level, x, y, e) {
-    e.hurt(this, x, y, 3);
+    return false
   }
 
-});
+  hurt(level, x, y, source, dmg, attackDir) {
+  //hurt: function(level, x, y, dmg) {
+    dmg || (dmg = source)
+
+    const damage = level.getData(x, y) + 1
+    level.add(new SmashParticle(x * 16 + 8, y * 16 + 8))
+    level.add(new TextParticle(`${dmg}`, x * 16 + 8, y * 16 + 8, Color.get(-1, 500, 500, 500)))
+    if (dmg > 0) {
+      let count = random.nextInt(2)
+      if (damage >= random.nextInt(10) + 3) {
+        level.setTile(x, y, Tile.dirt, 0)
+        count += 2
+      } else {
+        level.setData(x, y, damage)
+      }
+      for (let i = 0; i < count; i++) {
+        level.add(new ItemEntity(new ResourceItem(toDrop), x * 16 + random.nextInt(10) + 3, y * 16 + random.nextInt(10) + 3))
+      }
+    }
+  }
+
+  bumpedInto(level, x, y, e) {
+    e.hurt(this, x, y, 3)
+  }
+}
 
 
 

@@ -4,19 +4,16 @@
 // import com.mojang.ld22.entity.Player;
 // import com.mojang.ld22.item.FurnitureItem;
 
-function FurnitureRecipe(clazz) {
-  this.init(new FurnitureItem(new clazz()));
-  this.clazz = clazz;
-}
-
-FurnitureRecipe.Super = Recipe.prototype;
-FurnitureRecipe.prototype = extend(new Recipe(), {
-
-  craft: function(player) {
-    player.inventory.add(0, new FurnitureItem(new clazz()));
+class FurnitureRecipe extends Recipe {
+  constructor(clazz) {
+    super(new FurnitureItem(new clazz()))
+    this.clazz = clazz
   }
 
-});
+  craft(player) {
+    player.inventory.add(0, new FurnitureItem(new clazz()))
+  }
+}
 
 
 // public class FurnitureRecipe extends Recipe {

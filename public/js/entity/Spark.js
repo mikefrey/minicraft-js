@@ -6,7 +6,7 @@
 // import com.mojang.ld22.gfx.Screen;
 
 function Spark(owner, xa, ya) {
-  this.owner = ownder;
+  this.owner = owner;
   this.xx = this.x = owner.x;
   this.yy = this.y = owner.y;
   this.xr = 0;
